@@ -1,25 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter, Routes, Route, Router } from "react-router-dom";
+import LoginPage from '../src/pages/LoginPage';
+import Dashboard from './pages/Dashboard';
+import { AuthProvider, useAuth } from './contexts/authContext';
 import './App.css';
+import Trips from './pages/Trips';
+import Calendar from './pages/Calendar';
+import { TripsContext, useTripsContext } from './context';
+import { TripData } from './types';
+import fetchTrips from './functions/fetchTrips';
 
 function App() {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<LoginPage />}></Route>
+            <Route path="/dashboard" element={<Dashboard />}></Route>
+            <Route path="/calendar" element={<Calendar />}></Route>
+            <Route path="/trips" element={<Trips />}></Route>
+          </Routes>
+        </BrowserRouter>
+    </AuthProvider>
   );
 }
 
