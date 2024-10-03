@@ -25,14 +25,14 @@ const TripForm: React.FC<TripFormProps> = ({setCreateTrip, setNewTrip}) => {
             {errorMessage && <p>{errorMessage}</p>}
             <form onSubmit={handleCreate}>
                 <div className="Vertical-flex">
-                    <h4>Description</h4>
+                    <h4>Details</h4>
                     <div id="Name-div" className="Padding-hori">
-                        <div className="Vertical-flex">
-                            <TextField id="outlined-basic" className="mb-3" variant="outlined" required onChange={handleNameChange} sx={{width: '20rem'}} label="Name of Trip"/>
-                            <TextField id="outlined-basic" variant="outlined" onChange={handleLocationChange} sx={{width: '20rem'}} label="Location of Trip"/>
+                        <div className="Flex-space">
+                            <TextField id="outlined-basic" className="mb-3" variant="outlined" required onChange={handleNameChange} sx={{width: '15rem'}} label="Name of Trip"/>
+                            <TextField id="outlined-basic" variant="outlined" onChange={handleLocationChange} sx={{width: '15rem'}} label="Location of Trip"/>
                         </div>
                         
-                        <CirclePicker color={color} onChangeComplete={handleChangeColor}/>
+                        {/* <CirclePicker color={color} onChangeComplete={handleChangeColor}/> */}
                     </div>
                 </div>
                 <div className="Vertical-flex">

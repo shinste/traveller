@@ -130,6 +130,7 @@
 
 #NavBarFlex {
   justify-content: space-evenly;
+  flex-direction:row;
 }
 
 #Trip-color-div {
@@ -174,10 +175,13 @@
 
 #Trip-form-div {
   width: 45%;
+  height: fit-content;
   border: 2px #b6d3fd solid;
   padding: 5rem;
   border-radius: 12px;
   background-color: white;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #Trip-lister-div {
@@ -186,7 +190,7 @@
 }
 
 #Name-div {
-  margin-bottom: 5rem;
+  margin-bottom: 2rem;
   margin-top: 0.5rem;
   display: flex;
   justify-content: space-between;
@@ -215,7 +219,7 @@
 }
 
 .Each-trip {
-  width: 15rem;
+  width: 100%;
   height: fit-content;
   background-color: white;
   border: 2px #b6d3fd solid;
@@ -377,6 +381,7 @@
   width: 50%;
   padding: 3rem;
   text-align: center;
+  position: relative;
 }
 
 #New-todo-p {
@@ -504,6 +509,7 @@
 #Todo-list {
   overflow-y: auto;
   max-height: 50vh;
+  position: relative;
 }
 
 #Todo-info {
@@ -513,5 +519,44 @@
 
 #Checkbox {
   height: 100%;
-  width: 100%;
+  width: 50%;
+}
+
+.Appear-div {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 3rem;
+}
+
+.Appear-delete{
+  background-color: #B6D3FD;
+}
+
+#Todo-action{
+  width: 30%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.Delete-button{
+  opacity: .3;
+}
+
+.Delete-button:hover {
+  opacity: 1;
+}
+
+#Delete-button-div{
+  height: fit-content;
+  margin-bottom: auto;
+  margin-top: auto;
+}
+
+@media (max-width: 576px) {
+  .Nav-button {
+    font-size: 20px;
+    margin-right: 1rem;
+  }
 }

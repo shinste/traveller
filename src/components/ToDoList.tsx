@@ -8,10 +8,13 @@ import convertDate from "../functions/convertDate";
 import dayjs from "dayjs";
 import updateToDo from "../functions/updateToDo";
 import CheckIcon from "@mui/icons-material/Check";
+import DeleteIcon from '@mui/icons-material/Delete';
+import CloseIcon from '@mui/icons-material/Close';
 interface ToDoListProps {
   selectedTrip: TripData;
+  setToDoNumber: (newNumber: number) => void;
 }
-const ToDoList: React.FC<ToDoListProps> = ({ selectedTrip }) => {
+const ToDoList: React.FC<ToDoListProps> = ({ selectedTrip, setToDoNumber }) => {
   const { currentUser } = useAuth();
   const [newToDo, setNewToDo] = useState(false);
   const [update, setUpdate] = useState("");
@@ -20,6 +23,7 @@ const ToDoList: React.FC<ToDoListProps> = ({ selectedTrip }) => {
   const [success, setSuccess] = useState("");
   const [newToDoState, setNewToDoState] = useState(toDoData);
   const [selectedToDos, setSelectedToDos] = useState<string[]>([]);
+  const [deleteTodo, setDeleteTodo] = useState<string[]>([]);
   const statusColors: { [key: string]: string } = {
     Optional: "orange",
     Necessary: "green",
@@ -54,12 +58,25 @@ const ToDoList: React.FC<ToDoListProps> = ({ selectedTrip }) => {
     }
   };
 
+  const handleX = (id: string) => {
+    if (deleteTodo.includes(id)) {
+      setDeleteTodo(deleteTodo.filter(todo => todo !== id))
+    } else {
+      setDeleteTodo([...deleteTodo, id])
+    }
+  } 
+
   useEffect(() => {
     setNewToDoState(toDoData);
   }, [toDoData]);
   useEffect(() => {
+    setToDoNumber(toDoData.filter(toDo => toDo.tripID === currentUser?.email + selectedTrip.name).length)
     setNewToDo(false);
   }, [selectedTrip]);
+  useEffect(() => {
+    setSelectedToDos([]);
+    setDeleteTodo([]);
+  }, [])
   return (
     <div className="Trip-content-divs">
       <h3>To Do List</h3>
@@ -109,7 +126,10 @@ const ToDoList: React.FC<ToDoListProps> = ({ selectedTrip }) => {
                       {toDo.status}
                     </p>
                   </div>
-                  <div style={{ width: "15%" }}>
+                  <div id="Todo-action" style={{ width: "35%" }}>
+                    <div id="Delete-button-div" onClick={() => handleX(toDo.id)}>
+                      <CloseIcon className="Delete-button" fontSize="large" sx={{width: '3rem', height: '3rem', color: deleteTodo.includes(toDo.id) ? 'red' : null}}/>
+                    </div>
                     <div
                       onClick={() => handleClick(toDo.id)}
                       id="Checkbox"
@@ -128,8 +148,9 @@ const ToDoList: React.FC<ToDoListProps> = ({ selectedTrip }) => {
             );
           }
         })}
-        <button onClick={handleUpdate}>Update!</button>
+        {/* <button onClick={() => console.log(selectedToDos)}>eck</button> */}
       </div>
+      {(selectedToDos.length > 0 || deleteTodo.length > 0) && <div className="Appear-div"><button className="btn btn-outline-primary" style={{backgroundColor: '#B6D3FD', fontSize: '25px'}}onClick={handleUpdate}>Update</button></div>}
     </div>
   );
 };

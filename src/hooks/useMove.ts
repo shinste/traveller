@@ -35,7 +35,7 @@ const useMove = () => {
             });
         }
 
-        const handleMouseMoveDebounced = debounce(handleMouseMove, 1);
+        const handleMouseMoveDebounced = debounce(handleMouseMove, 12);
 
         const targetDiv = document.getElementById('loginDisplayDiv');
         document.addEventListener('mousemove', handleMouseMoveDebounced);

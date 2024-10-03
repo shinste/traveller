@@ -15,7 +15,7 @@ const DatePickerCustom: React.FC<DatePickerProps>= ({label, onChange}) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={['DatePicker']}>
-        <DatePicker label={label} onChange={onChange} sx={{paddingTop: 0}}
+        <DatePicker label={label} onChange={onChange} sx={{paddingTop: 0, width: '15rem'}}
           />
       </DemoContainer>
     </LocalizationProvider>
