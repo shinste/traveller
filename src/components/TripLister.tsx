@@ -74,7 +74,10 @@ const TripLister: React.FC<TripListerProps> = ({
                     : undefined,
               }}
             >
-              <div onClick={() => handleTripClick(index)}>
+              <div
+                style={{ overflowX: "hidden" }}
+                onClick={() => handleTripClick(index)}
+              >
                 <div id="Holding-trip-name">
                   <p id="Trip-name">
                     {trip.name}

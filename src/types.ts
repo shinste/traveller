@@ -1,4 +1,5 @@
 import { Dayjs } from "dayjs";
+import { ChangeEvent, MutableRefObject, RefObject } from "react";
 
 export interface TripData {
   id: string;
@@ -9,6 +10,9 @@ export interface TripData {
   tripID: string;
   startDate: string;
   endDate?: string;
+  startTime?: string;
+  endTime?: string;
+  description?: string;
 }
 
 export interface TripsContextType {
@@ -42,4 +46,18 @@ export interface NewToDoProps {
   setNewToDo: (newToDo: boolean) => void;
   selectedTripName: string;
   setUpdate: (update: string) => void;
+}
+
+export interface TripEvent {
+  id: number;
+  text: string;
+  start: string;
+  end: string;
+  backColor: string;
+  participants: number;
+}
+
+export interface CustomTimePickerProps {
+  change: (date: Dayjs | null) => void;
+  label: string;
 }

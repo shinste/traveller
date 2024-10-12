@@ -5,10 +5,9 @@ import { useAuth } from "../contexts/authContext";
 import { useTripsContext } from "../context";
 import { ToDoData } from "../types";
 
-const useFetchToDos = (updater: string) => {
+const useToDos = (updater: string) => {
   const [toDoData, setToDoData] = useState<ToDoData[]>([]);
   const { currentUser } = useAuth();
-  // const { refresh } = useTripsContext();
 
   const fetchToDos = async () => {
     const tripsRef = collection(db, "todos");
@@ -41,4 +40,4 @@ const useFetchToDos = (updater: string) => {
   return { toDoData };
 };
 
-export default useFetchToDos;
+export default useToDos;
