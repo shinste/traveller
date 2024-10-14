@@ -6,10 +6,10 @@ import fetchTrips from "../functions/fetchTrips";
 // This is to refresh the trips data every rerender of page
 const useTrips = () => {
   const { currentUser } = useAuth();
-  const { updateTrips } = useTripsContext();
+  const { updateTrips, refresh } = useTripsContext();
   useEffect(() => {
     fetchTrips(currentUser?.email, updateTrips);
-  }, []);
+  }, [refresh]);
 };
 
 export default useTrips;

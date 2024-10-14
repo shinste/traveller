@@ -19,6 +19,8 @@ import MenuItem from "@mui/material/MenuItem";
 import Dialog from "@mui/material/Dialog";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useTripsContext } from "../context";
+import deleteEntry from "../functions/deleteEntry";
+import { TripData } from "../types";
 
 interface TripListerProps {
   newTrip: string;
@@ -39,15 +41,25 @@ const TripLister: React.FC<TripListerProps> = ({
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const [dialog, setDialog] = useState(false);
+  const [selectedTrip, setSelectedTrip] = useState<TripData | null>()
 
-  const { tripsData } = useTripsContext();
+  const { tripsData, refresh, updateRefresh } = useTripsContext();
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>, tripId: TripData) => {
     setAnchorEl(event.currentTarget);
+    setSelectedTrip(tripId);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleDeleteTrip = (id: string) => {
+    deleteEntry([id], "trips");
+    setTimeout(function() {updateRefresh(refresh + 1)}, 5000)
+    updateRefresh(refresh + 1);
+    setDialog(false);
+    setAnchorEl(null);
+  }
 
   return (
     <div id="Trip-lister-div">
@@ -100,7 +112,7 @@ const TripLister: React.FC<TripListerProps> = ({
                     aria-controls={open ? "basic-menu" : undefined}
                     aria-haspopup="true"
                     aria-expanded={open ? "true" : undefined}
-                    onClick={handleClick}
+                    onClick={(event) => handleClick(event, trip)}
                     sx={{
                       minHeight: 0,
                       minWidth: 0,
@@ -132,12 +144,12 @@ const TripLister: React.FC<TripListerProps> = ({
                   >
                     <div id="Delete-div">
                       <h4>
-                        Are you sure you'd like to delete the trip "{trip.name}
+                        Are you sure you'd like to delete the trip "{selectedTrip && selectedTrip.name}
                         "?
                       </h4>
                       <div id="Delete-buttons">
                         <Button onClick={() => setDialog(false)}>Cancel</Button>
-                        <Button color="error">Delete</Button>
+                        <Button color="error" onClick={() => selectedTrip && handleDeleteTrip(selectedTrip.id)}>Delete</Button>
                       </div>
                     </div>
                   </Dialog>

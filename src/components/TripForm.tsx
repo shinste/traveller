@@ -82,7 +82,6 @@ const TripForm: React.FC<TripFormProps> = ({ setCreateTrip, setNewTrip }) => {
                 change={handleStartTimeChange}
                 label="Start Time"
               />
-
               <CustomTimePicker change={handleEndTimeChange} label="End Time" />
             </div>
           </div>

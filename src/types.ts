@@ -9,10 +9,10 @@ export interface TripData {
   color: string;
   tripID: string;
   startDate: string;
-  endDate?: string;
-  startTime?: string;
-  endTime?: string;
-  description?: string;
+  endDate: string;
+  startTime: string;
+  endTime: string;
+  description: string;
 }
 
 export interface TripsContextType {

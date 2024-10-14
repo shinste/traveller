@@ -6,6 +6,7 @@ const deleteEntry = (deleteList: string[], collectionName: string) => {
     const docRef = doc(db, collectionName, id);
     deleteDoc(docRef)
       .then(() => {
+        console.log(id)
         console.log(`Successful Delete from ${collectionName}`);
       })
       .catch((error) => {

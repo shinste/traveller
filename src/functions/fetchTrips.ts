@@ -21,7 +21,10 @@ const fetchTrips = async (
       color: doc.data().color,
       tripID: doc.data().tripID,
       startDate: doc.data().startDate,
-      endDate: doc.data().endDate || "",
+      endDate: doc.data().endDate,
+      startTime: doc.data().startTime,
+      endTime: doc.data().endTime,
+      description: doc.data().description
     }));
     updateTrips(mappedTrips);
     console.log(
