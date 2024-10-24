@@ -1,22 +1,28 @@
 import { useTripsContext } from "../context";
+import { DashboardColorsProps } from "../types";
 import TripDashboard from "./TripDashboard";
 
-const DashboardColors = () => {
+const DashboardColors: React.FC<DashboardColorsProps> = ({ setDateChosen }) => {
+  const { tripsData } = useTripsContext();
 
-    const { tripsData } = useTripsContext();
-
-    return (
-        <div id="Trip-color-div">
-            {tripsData.map((trip, index) => {
-                return (
-                    <div className="Flex" key={index}>
-                        <div className="Circle" style={{backgroundColor: trip.color}} />
-                        <p id="Dashboard-trip-name">{trip.name}</p>
-                    </div>
-                )
-            })}
-        </div>
-    );
-}
+  return (
+    <div id="Trip-color-div">
+      {tripsData.map((trip, index) => {
+        return (
+          <button
+            key={index + trip.name}
+            className="Bland-button"
+            onClick={() => setDateChosen(trip.startDate)}
+          >
+            <div className="Flex" key={index}>
+              <div className="Circle" style={{ backgroundColor: trip.color }} />
+              <p id="Dashboard-trip-name">{trip.name}</p>
+            </div>
+          </button>
+        );
+      })}
+    </div>
+  );
+};
 
 export default DashboardColors;

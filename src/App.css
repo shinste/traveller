@@ -113,6 +113,7 @@
 #Dashboard-main-div {
   height: 100%;
   overflow: hidden;
+  overflow-y: auto;
 }
 
 #Navigation {
@@ -161,9 +162,11 @@
 }
 
 #Nav-div {
-  margin-bottom: 2rem;
+  /* margin-bottom: 2rem; */
   background-color: #6a7aee;
   box-shadow: 0px 0px 5px;
+  position: relative;
+  z-index: 1;
 }
 
 .badge {
@@ -192,15 +195,25 @@
 
 #Trip-lister-div {
   /* width: 20rem; */
+  background-color: #f0f0f0;
   width: 15vw;
+  height: 100vh;
+  padding-right: 1rem;
+  position: relative;
+  z-index: 0;
+  border: rgb(165, 159, 159) 1.5px solid;
 }
 
 #Name-div {
-  margin-bottom: 2rem;
+  /* margin-bottom: 2rem; */
   margin-top: 0.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.Color-picker {
+  margin-bottom: 2rem;
 }
 
 #Date-pickers {
@@ -399,14 +412,17 @@
 }
 
 .Trip-content-divs {
-  width: 50%;
+  /* width: 100%; */
   padding: 3rem;
   padding-top: 1rem;
   text-align: center;
   position: relative;
   border-radius: 12px;
-  min-height: 70vh;
+  min-height: 40vh;
   background-color: white;
+  /* border: 3px rgb(197, 197, 197) solid; */
+  box-shadow: 0 5px 10px rgba(154, 160, 185, 0.05),
+    0 15px 40px rgba(166, 173, 201, 0.2);
 }
 
 #New-todo-p {
@@ -583,6 +599,81 @@
   width: fit-content;
 }
 
+.calendar_default_event_inner {
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 10pt;
+  padding: 5px;
+  opacity: 0.8;
+}
+
+#Hold-calendar {
+  padding-right: 1rem;
+  /* overflow-y: hidden; */
+  /* height: 100vh; */
+  /* position: fixed; */
+  padding-top: auto;
+  margin-top: auto;
+  bottom: 0;
+}
+
+.Itinerary-day {
+  width: 4rem;
+}
+
+#Itinerary-body {
+}
+
+#Itinerary-full-trip {
+  width: 100%;
+  font-weight: bold;
+  color: black;
+}
+
+.Itinerary-item {
+  padding: 0.5rem;
+  color: white;
+  border-radius: 12px;
+  border: 1px #8cb3ee solid;
+}
+
+.Itinerary-name {
+  text-align: left;
+  margin: 0;
+}
+
+.Align-down {
+  /* display: flex; */
+  align-items: end;
+}
+
+#Itinerary-button-div {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+#Control-itinerary {
+  border-radius: 12px;
+  background-color: white;
+  /* border: 3px rgb(197, 197, 197) solid; */
+  /* box-shadow: rgb(197, 197, 197) 3px 2px 1px; */
+
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+#Entire-itinerary {
+  /* border: 3px #b6d3fd solid; */
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  /* border-radius: 12px; */
+  box-shadow: 0 5px 10px rgba(154, 160, 185, 0.05),
+    0 15px 40px rgba(166, 173, 201, 0.2);
+}
 @media (max-width: 576px) {
   .Nav-button {
     font-size: 20px;

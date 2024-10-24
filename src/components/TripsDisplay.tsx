@@ -9,7 +9,6 @@ const TripsDisplay = () => {
   const [newTrip, setNewTrip] = useState("");
   const [highlight, setHighlight] = useState(0);
   const { tripsData } = useTripsContext();
-  // useFetchTrips(newTrip);
 
   return (
     <div className="Flex" style={{ height: "78vh" }}>

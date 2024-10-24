@@ -1,3 +1,7 @@
+import {
+  DateValidationError,
+  PickerChangeHandlerContext,
+} from "@mui/x-date-pickers";
 import { Dayjs } from "dayjs";
 import { ChangeEvent, MutableRefObject, RefObject } from "react";
 
@@ -60,4 +64,51 @@ export interface TripEvent {
 export interface CustomTimePickerProps {
   change: (date: Dayjs | null) => void;
   label: string;
+}
+
+export interface DashboardColorsProps {
+  setDateChosen: (dateChosen: string) => void;
+}
+
+export interface ItineraryProps {
+  selectedTrip: TripData;
+  // itineraryUpdate: number;
+  // setItineraryUpdate: (update: number) => void;
+}
+
+export interface CustomSchedulerProps {
+  selectedTrip: TripData;
+  itineraryUpdate: number;
+  setEditItem: (item: ItineraryItem) => void;
+  editItem: ItineraryItem | undefined;
+  keys: number;
+  setKeys: (key: number) => void;
+}
+
+export interface ItineraryControlProps {
+  selectedTrip: TripData;
+  itineraryUpdate: number;
+  setItineraryUpdate: (update: number) => void;
+  editItem: ItineraryItem | undefined;
+  // key: number;
+  // setKey: (key: number) => void;
+}
+
+export interface ItineraryItem {
+  id?: string;
+  name: string;
+  startDate: string;
+  endDate: string;
+  trip: string;
+}
+
+export interface DatePickerProps {
+  label: string;
+  onChange:
+    | ((
+        value: Dayjs | null,
+        context: PickerChangeHandlerContext<DateValidationError>
+      ) => void)
+    | undefined;
+  value: Dayjs | null;
 }

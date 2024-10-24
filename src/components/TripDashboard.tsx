@@ -28,8 +28,12 @@ const TripDashboard: React.FC<TripDashboardProps> = ({ highlight }) => {
         </div>
       </div>
       <div className="Flex">
+        <div id="Entire-itinerary">
+          <h3>Day-wise Intinerary</h3>
+          <Itinerary selectedTrip={tripsData[highlight]} />
+        </div>
+
         <ToDoList selectedTrip={tripsData[highlight]} />
-        <Itinerary />
       </div>
     </div>
   );

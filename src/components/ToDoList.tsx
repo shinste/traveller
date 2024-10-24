@@ -92,7 +92,13 @@ const ToDoList: React.FC<ToDoListProps> = ({ selectedTrip }) => {
   return (
     <div
       className="Trip-content-divs"
-      style={{ border: `4px ${selectedTrip.color} solid` }}
+      style={{
+        // border: `3px ${selectedTrip.color} solid`,
+        // boxShadow: `${selectedTrip.color} 2px 2px 1px`,
+        // backgroundColor: selectedTrip.color,
+        width: "30%",
+        marginLeft: "1rem",
+      }}
     >
       <h3>To Do List</h3>
       {error && error}

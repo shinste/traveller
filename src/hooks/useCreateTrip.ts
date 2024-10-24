@@ -23,8 +23,8 @@ const useCreateTrip = (
   const tripsRef = collection(db, "trips");
   const nameRef = useRef("");
   const locationRef = useRef("");
-  const startDateRef = useRef<dayjs.Dayjs | null>(null);
-  const endDateRef = useRef<dayjs.Dayjs | null>(null);
+  const [startDate, setStartDate] = useState<dayjs.Dayjs | null>(null);
+  const [endDate, setEndDate] = useState<dayjs.Dayjs | null>(null);
   const descriptionRef = useRef("");
   const startTimeRef = useRef<dayjs.Dayjs | null>(null);
   const endTimeRef = useRef<dayjs.Dayjs | null>(null);
@@ -47,27 +47,41 @@ const useCreateTrip = (
       setErrorMessage(
         "The maximum number of characters for the trip name is 27."
       );
-    } else if (!startDateRef.current || !endDateRef.current) {
+    } else if (!startDate || !endDate) {
       setErrorMessage(
         "At least one date is invalid, please input a proper date"
       );
     } else if (!color) {
       setErrorMessage("Please choose a color");
-    } else if (startDateRef.current > endDateRef.current) {
+    } else if (startDate > endDate) {
       setErrorMessage("Your starting date cannot be after the ending date!");
+    } else if (!startTimeRef.current || !endTimeRef.current) {
+      setErrorMessage("Please select a starting time");
     } else {
       try {
+        console.log({
+          // tripID: currentUser?.email + nameRef.current,
+          // user: currentUser?.email,
+          // name: nameRef.current,
+          // location: locationRef.current,
+          // startDate: startDateRef.current?.format("YYYY-MM-DD"),
+          // endDate: endDateRef.current?.format("YYYY-MM-DD"),
+          // color: color,
+          description: descriptionRef.current,
+          startTime: "T" + startTimeRef.current.format("HH:mm:ss"),
+          endTime: "T" + endTimeRef.current.format("HH:mm:ss"),
+        });
         const docRef = await addDoc(tripsRef, {
           tripID: currentUser?.email + nameRef.current,
           user: currentUser?.email,
           name: nameRef.current,
           location: locationRef.current,
-          startDate: startDateRef.current?.format("YYYY-MM-DD"),
-          endDate: endDateRef.current?.format("YYYY-MM-DD"),
+          startDate: startDate.format("YYYY-MM-DD"),
+          endDate: endDate.format("YYYY-MM-DD"),
           color: color,
-          description: descriptionRef,
-          startTime: startTimeRef,
-          endTime: endTimeRef,
+          description: currentUser?.email,
+          startTime: "T" + startTimeRef.current.format("HH:mm:ss"),
+          endTime: "T" + endTimeRef.current.format("HH:mm:ss"),
         });
         console.log("Document written with ID: ", docRef.id);
         updateRefresh(refresh + 1);
@@ -79,17 +93,17 @@ const useCreateTrip = (
     }
   };
 
-  const handleStartChange = (date: dayjs.Dayjs | null) => {
-    if (date) {
-      startDateRef.current = date;
-    }
-  };
+  // const handleStartChange = (date: dayjs.Dayjs | null) => {
+  //   if (date) {
+  //     startDateRef.current = date;
+  //   }
+  // };
 
-  const handleEndChange = (date: dayjs.Dayjs | null) => {
-    if (date) {
-      endDateRef.current = date;
-    }
-  };
+  // const handleEndChange = (date: dayjs.Dayjs | null) => {
+  //   if (date) {
+  //     endDateRef.current = date;
+  //   }
+  // };
 
   const handleStartTimeChange = (date: Dayjs | null) => {
     if (date) {
@@ -102,6 +116,12 @@ const useCreateTrip = (
       endTimeRef.current = date;
     }
   };
+
+  const handleDescription = (descript: ChangeEvent<HTMLInputElement>) => {
+    if (descript) {
+      descriptionRef.current = descript.target.value;
+    }
+  };
   interface Color {
     hex: string;
   }
@@ -110,8 +130,10 @@ const useCreateTrip = (
   };
 
   return {
-    handleStartChange,
-    handleEndChange,
+    setStartDate,
+    setEndDate,
+    startDate,
+    endDate,
     handleCreate,
     handleNameChange,
     handleChangeColor,
@@ -120,6 +142,7 @@ const useCreateTrip = (
     errorMessage,
     handleStartTimeChange,
     handleEndTimeChange,
+    handleDescription,
   };
 };
 

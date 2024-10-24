@@ -5,6 +5,7 @@ import DashboardColors from "../components/DashboardColors";
 import useTrips from "../hooks/useTrips";
 import {
   DayPilotCalendar,
+  DayPilotMonth,
   DayPilotNavigator,
 } from "@daypilot/daypilot-lite-react";
 import { useEffect, useState } from "react";
@@ -12,25 +13,16 @@ import dayjs from "dayjs";
 import { useTripsContext } from "../context";
 import { TripEvent } from "../types";
 const Dashboard = () => {
-  const eventse = [
-    {
-      id: 1,
-      text: "Event 1",
-      start: "2024-10-12T10:30:00",
-      end: "2024-10-13T13:00:00",
-      participants: 2,
-    },
-    {
-      id: 2,
-      text: "Event 2",
-      start: "2024-10-12T11:30:00",
-      end: "2024-10-13T13:00:00",
-      backColor: "#6aa84f",
-      participants: 1,
-    },
-  ];
+  const config = {
+    // ...
+    durationBarVisible: false,
+    showAllDayEvents: true,
+    // ...
+  };
   const { tripsData } = useTripsContext();
-  const [dateChosen, setDateChosen] = useState<any>("2024-10-12");
+  const [dateChosen, setDateChosen] = useState<any>(
+    dayjs().format("YYYY-MM-DD")
+  );
   const [events, setEvents] = useState<TripEvent[]>([]);
   useTrips();
 
@@ -39,8 +31,8 @@ const Dashboard = () => {
       return {
         id: Number(trip.id),
         text: trip.name,
-        start: `${trip.startDate}T10:30:00`,
-        end: `${trip.endDate}T10:30:00`,
+        start: `${trip.startDate}${trip.startTime}`,
+        end: `${trip.endDate}${trip.endTime}`,
         backColor: trip.color,
         participants: 1,
       };
@@ -49,7 +41,7 @@ const Dashboard = () => {
     // setEvents(tripsData.map((trip) => {
     //   return {id: trip.id, text: trip.name, start: `${trip.startDate}T10:30:00`, }
     // }))
-  }, []);
+  }, [tripsData]);
   return (
     <div className="Page-default">
       <div id="Dashboard-main-div">
@@ -62,14 +54,31 @@ const Dashboard = () => {
               }}
             />
             {/* <MiniCalendar /> */}
-            <DashboardColors />
+            <DashboardColors setDateChosen={setDateChosen} />
           </div>
-          <div>
+          <div id="Hold-calendar">
+            {/* <DayPilotMonth
+            // viewType="Days"
+            // startDate={dateChosen}
+            // events={events}
+            // // height={100}
+            // hourWidth={60}
+            // heightSpec="BusinessHours"
+            // {...config}
+            startDate={dateChosen}
+            events={events}
+            // visible={view === "Month"}
+            eventBarVisible={false}
+            onTimeRangeSelected={onTimeRangeSelected}
+            controlRef={setMonthView}
+            /> */}
             <DayPilotCalendar
               viewType="Week"
               startDate={dateChosen}
               events={events}
-              height={5}
+              hourWidth={60}
+              heightSpec="BusinessHours"
+              {...config}
             />
           </div>
         </div>
