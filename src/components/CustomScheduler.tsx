@@ -19,7 +19,7 @@ const CustomScheduler: React.FC<CustomSchedulerProps> = ({
   const [prevEdit, setPrevEdit] = useState<string | undefined>("");
   // const [filteredData, setFilteredData] = useState<any>(schedulerData);
   const [range, setRange] = useState({
-    startDate: new Date("2024-10-10"),
+    startDate: new Date(),
     endDate: new Date(),
   });
 

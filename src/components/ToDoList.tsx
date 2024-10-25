@@ -78,11 +78,6 @@ const ToDoList: React.FC<ToDoListProps> = ({ selectedTrip }) => {
     setNewToDoState(toDoData);
   }, [toDoData]);
   useEffect(() => {
-    // setToDoNumber(
-    //   toDoData.filter(
-    //     (toDo) => toDo.tripID === currentUser?.email + selectedTrip.name
-    //   ).length
-    // );
     setNewToDo(false);
   }, [selectedTrip]);
   useEffect(() => {
@@ -127,10 +122,6 @@ const ToDoList: React.FC<ToDoListProps> = ({ selectedTrip }) => {
               <div
                 className="Todo-regular-div Vertical-flex Left-align mt-2"
                 key={index}
-                style={{
-                  border: `2px ${selectedTrip.color} solid`,
-                  width: "100%",
-                }}
               >
                 <div className="Flex-space">
                   <div id="Todo-info">
@@ -141,39 +132,41 @@ const ToDoList: React.FC<ToDoListProps> = ({ selectedTrip }) => {
                       {dayjs(toDo.deadline).format("MMMM D, YYYY")}
                     </p>
                     <p
+                      id="Todo-status"
                       className="p"
                       style={{ color: statusColors[toDo.status] }}
                     >
                       {toDo.status}
                     </p>
                   </div>
-                  <div id="Todo-action" style={{ width: "35%" }}>
-                    <div
-                      id="Delete-button-div"
-                      onClick={() => handleX(toDo.id)}
-                    >
-                      <CloseIcon
-                        className="Delete-button"
-                        fontSize="large"
-                        sx={{
-                          width: "3rem",
-                          height: "3rem",
-                          color: deleteTodo.includes(toDo.id) ? "red" : null,
-                        }}
-                      />
-                    </div>
-                    <div
-                      onClick={() => handleClick(toDo.id)}
-                      id="Checkbox"
-                      style={{ border: `5px ${selectedTrip.color} solid` }}
-                    >
-                      {toDo.checked && (
-                        <CheckIcon
-                          color="primary"
-                          sx={{ height: "100%", width: "100%" }}
+                  <div id="Todo-action" style={{ width: "50%" }}>
+                    <div id="Delete-button-div">
+                      <button
+                        className="Bland-button"
+                        onClick={() => handleX(toDo.id)}
+                      >
+                        <CloseIcon
+                          className="Delete-button"
+                          fontSize="large"
+                          sx={{
+                            color: deleteTodo.includes(toDo.id) ? "red" : null,
+                          }}
                         />
-                      )}
+                      </button>
                     </div>
+                    <button
+                      className="Bland-button"
+                      onClick={() => handleClick(toDo.id)}
+                    >
+                      <div id="Checkbox">
+                        {toDo.checked && (
+                          <CheckIcon
+                            color="primary"
+                            sx={{ height: "100%", width: "100%" }}
+                          />
+                        )}
+                      </div>
+                    </button>
                   </div>
                 </div>
               </div>

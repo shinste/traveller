@@ -45,10 +45,10 @@ const ItineraryControl: React.FC<ItineraryControlProps> = ({
     } else if (!endDate) {
       setError("Please provide a valid end date");
     } else if (startDate < dayjs(selectedTrip.startDate)) {
-      setError("Your start date cannot be before the trip end date.");
-      console.log("before");
+      setError("Your start date cannot be before the trip start date.");
     } else if (endDate > dayjs(selectedTrip.endDate)) {
       setError("Your end date cannot be after the trip end date.");
+      console.log(startDate, selectedTrip.startDate);
     } else {
       const status = await createItinerary({
         name: name,
@@ -150,6 +150,15 @@ const ItineraryControl: React.FC<ItineraryControlProps> = ({
           </div>
         </div>
         <div id="Itinerary-button-div">
+          <button
+            type="button"
+            role="submit"
+            className="btn btn-outline-primary mb-1"
+            style={{ color: "black" }}
+            onClick={editItem ? handleEditItinerary : handleCreateItinerary}
+          >
+            {editItem ? "Save Changes" : "Create Itinerary Item"}
+          </button>
           {editItem && (
             <button
               type="button"
@@ -161,15 +170,6 @@ const ItineraryControl: React.FC<ItineraryControlProps> = ({
               Delete
             </button>
           )}
-          <button
-            type="button"
-            role="submit"
-            className="btn btn-outline-primary"
-            style={{ color: "black" }}
-            onClick={editItem ? handleEditItinerary : handleCreateItinerary}
-          >
-            {editItem ? "Save Changes" : "Create Itinerary Item"}
-          </button>
         </div>
       </div>
     </div>

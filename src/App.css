@@ -286,12 +286,15 @@
   margin-bottom: 0;
   font-weight: 600;
   text-transform: capitalize;
+  text-align: left;
 }
 
 #Trip-date {
   font-size: 10px;
   color: #939393;
   margin-bottom: 0;
+  text-align: left;
+  white-space: nowrap;
 }
 
 .Superscript-text {
@@ -431,7 +434,7 @@
 }
 
 #New-todo-p {
-  font-size: 30px;
+  font-size: 20px;
   color: #afacaf;
   margin-bottom: 0;
 }
@@ -446,6 +449,10 @@
   align-items: center;
   width: 100%;
   display: flex;
+  box-shadow: 0 5px 10px rgba(154, 160, 185, 0.05);
+  border: 2px #b6d3fd solid;
+  width: "100%";
+  /* 0 15px 40px rgba(166, 173, 201, 0.2); */
 }
 
 #New-todo-button {
@@ -460,8 +467,8 @@
 
 #Plus {
   color: #afacaf;
-  height: 5rem;
-  width: 5rem;
+  height: 3rem;
+  width: 3rem;
 }
 
 #Save {
@@ -542,14 +549,16 @@
 
 #Todo-description {
   font-weight: bold;
+  font-size: 12px;
 }
 
 #Todo-deadline {
   color: #a9a9a9;
+  font-size: 10px;
 }
 
-#Todo-description {
-  font-weight: bold;
+#Todo-status {
+  font-size: 11px;
 }
 
 #Todo-list {
@@ -564,8 +573,12 @@
 }
 
 #Checkbox {
-  height: 100%;
-  width: 50%;
+  height: 3rem;
+  width: 3rem;
+  /* max-height: min-content; */
+  /* display: flex; */
+  border: 5px #b6d3fd solid;
+  align-self: center;
 }
 
 .Appear-div {
@@ -588,6 +601,8 @@
 
 .Delete-button {
   opacity: 0.3;
+  height: 3rem;
+  width: 3rem;
 }
 
 .Delete-button:hover {
@@ -654,10 +669,13 @@
 }
 
 #Itinerary-button-div {
-  width: 100%;
+  width: fit-content;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  /* justify-content: center; */
   margin-top: 1rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #Control-itinerary {

@@ -120,8 +120,6 @@ export interface ItineraryControlProps {
   itineraryUpdate: number;
   setItineraryUpdate: (update: number) => void;
   editItem: ItineraryItem | undefined | null;
-  // key: number;
-  // setKey: (key: number) => void;
 }
 
 export interface ItineraryItem {

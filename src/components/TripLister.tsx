@@ -41,11 +41,14 @@ const TripLister: React.FC<TripListerProps> = ({
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const [dialog, setDialog] = useState(false);
-  const [selectedTrip, setSelectedTrip] = useState<TripData | null>()
+  const [selectedTrip, setSelectedTrip] = useState<TripData | null>();
 
   const { tripsData, refresh, updateRefresh } = useTripsContext();
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>, tripId: TripData) => {
+  const handleClick = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    tripId: TripData
+  ) => {
     setAnchorEl(event.currentTarget);
     setSelectedTrip(tripId);
   };
@@ -55,11 +58,13 @@ const TripLister: React.FC<TripListerProps> = ({
 
   const handleDeleteTrip = (id: string) => {
     deleteEntry([id], "trips");
-    setTimeout(function() {updateRefresh(refresh + 1)}, 5000)
+    setTimeout(function () {
+      updateRefresh(refresh + 1);
+    }, 5000);
     updateRefresh(refresh + 1);
     setDialog(false);
     setAnchorEl(null);
-  }
+  };
 
   return (
     <div id="Trip-lister-div">
@@ -74,6 +79,8 @@ const TripLister: React.FC<TripListerProps> = ({
       <div id="Hold-trips">
         {tripsData.map((trip, index) => {
           return (
+            // <div>
+            //   <button className="Bland-button">
             <div
               key={index}
               className="Each-trip Flex-space"
@@ -86,75 +93,92 @@ const TripLister: React.FC<TripListerProps> = ({
                     : undefined,
               }}
             >
-              <div
-                style={{ overflowX: "hidden" }}
-                onClick={() => handleTripClick(index)}
-              >
-                <div id="Holding-trip-name">
-                  <p id="Trip-name">
-                    {trip.name}
-                    {trip.name === newTrip && (
-                      <p className="Superscript-text">NEW</p>
-                    )}
-                  </p>
-                </div>
-                <p id="Trip-date">
-                  {dayjs(trip.startDate).format("MMMM D, YYYY")}
-                  {trip.endDate &&
-                    trip.endDate !== trip.startDate &&
-                    " - " + dayjs(trip.endDate).format("MMMM D, YYYY")}
-                </p>
-              </div>
-              <div>
-                <div>
-                  <Button
-                    id="basic-button"
-                    aria-controls={open ? "basic-menu" : undefined}
-                    aria-haspopup="true"
-                    aria-expanded={open ? "true" : undefined}
-                    onClick={(event) => handleClick(event, trip)}
-                    sx={{
-                      minHeight: 0,
-                      minWidth: 0,
-                      padding: 0,
-                      color: "black",
-                    }}
+              <button className="Bland-button">
+                <div className="Flex">
+                  <div
+                    style={{ overflowX: "hidden" }}
+                    onClick={() => handleTripClick(index)}
                   >
-                    <SettingsSharpIcon />
-                  </Button>
-                  <Menu
-                    id="basic-menu"
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={handleClose}
-                    MenuListProps={{
-                      "aria-labelledby": "basic-button",
-                    }}
-                  >
-                    <MenuItem onClick={handleClose}>Edit</MenuItem>
-                    <MenuItem onClick={handleClose}>Share</MenuItem>
-                    <MenuItem onClick={() => setDialog(true)}>Delete</MenuItem>
-                  </Menu>
-                  <Dialog
-                    open={dialog}
-                    onClose={() => {
-                      setDialog(false);
-                      handleClose();
-                    }}
-                  >
-                    <div id="Delete-div">
-                      <h4>
-                        Are you sure you'd like to delete the trip "{selectedTrip && selectedTrip.name}
-                        "?
-                      </h4>
-                      <div id="Delete-buttons">
-                        <Button onClick={() => setDialog(false)}>Cancel</Button>
-                        <Button color="error" onClick={() => selectedTrip && handleDeleteTrip(selectedTrip.id)}>Delete</Button>
-                      </div>
+                    <div id="Holding-trip-name">
+                      <p id="Trip-name">
+                        {trip.name}
+                        {trip.name === newTrip && (
+                          <p className="Superscript-text">NEW</p>
+                        )}
+                      </p>
                     </div>
-                  </Dialog>
+                    <p id="Trip-date">
+                      {dayjs(trip.startDate).format("MMMM D, YYYY")}
+                      {trip.endDate &&
+                        trip.endDate !== trip.startDate &&
+                        " - " + dayjs(trip.endDate).format("MMMM D, YYYY")}
+                    </p>
+                  </div>
+                  <div>
+                    <div>
+                      <Button
+                        id="basic-button"
+                        aria-controls={open ? "basic-menu" : undefined}
+                        aria-haspopup="true"
+                        aria-expanded={open ? "true" : undefined}
+                        onClick={(event) => handleClick(event, trip)}
+                        sx={{
+                          minHeight: 0,
+                          minWidth: 0,
+                          padding: 0,
+                          color: "black",
+                        }}
+                      >
+                        <SettingsSharpIcon />
+                      </Button>
+                      <Menu
+                        id="basic-menu"
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
+                        MenuListProps={{
+                          "aria-labelledby": "basic-button",
+                        }}
+                      >
+                        <MenuItem onClick={handleClose}>Edit</MenuItem>
+                        <MenuItem onClick={handleClose}>Share</MenuItem>
+                        <MenuItem onClick={() => setDialog(true)}>
+                          Delete
+                        </MenuItem>
+                      </Menu>
+                      <Dialog
+                        open={dialog}
+                        onClose={() => {
+                          setDialog(false);
+                          handleClose();
+                        }}
+                      >
+                        <div id="Delete-div">
+                          <h4>
+                            Are you sure you'd like to delete the trip "
+                            {selectedTrip && selectedTrip.name}
+                            "?
+                          </h4>
+                          <div id="Delete-buttons">
+                            <Button onClick={() => setDialog(false)}>
+                              Cancel
+                            </Button>
+                            <Button
+                              color="error"
+                              onClick={() =>
+                                selectedTrip &&
+                                handleDeleteTrip(selectedTrip.id)
+                              }
+                            >
+                              Delete
+                            </Button>
+                          </div>
+                        </div>
+                      </Dialog>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </button>
             </div>
           );
         })}
