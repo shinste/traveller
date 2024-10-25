@@ -99,6 +99,11 @@
   font-size: 12px;
 }
 
+.Error-positioning {
+  position: absolute;
+  top: -1.5rem;
+}
+
 #Google-logo {
   height: 30px;
   width: 30px;
@@ -665,6 +670,16 @@
   margin-top: 1rem;
 }
 
+.Form-div {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.Forms {
+  height: 5rem;
+}
+
 #Entire-itinerary {
   /* border: 3px #b6d3fd solid; */
   width: 70%;
@@ -674,6 +689,7 @@
   box-shadow: 0 5px 10px rgba(154, 160, 185, 0.05),
     0 15px 40px rgba(166, 173, 201, 0.2);
 }
+
 @media (max-width: 576px) {
   .Nav-button {
     font-size: 20px;

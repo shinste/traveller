@@ -4,8 +4,6 @@ import { db } from "../firebase/firebase";
 
 const updateToDo = async (toDoInfo: ToDoData[], selectedToDo: string[]) => {
   const batch = writeBatch(db);
-  console.log(selectedToDo, "selected");
-  console.log(toDoInfo, "to be updated");
   for (let i = 0; i < toDoInfo.length; i++) {
     if (selectedToDo.includes(toDoInfo[i].id)) {
       const docRef = doc(db, "todos", toDoInfo[i].id);

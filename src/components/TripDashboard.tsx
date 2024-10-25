@@ -3,6 +3,7 @@ import convertDate from "../functions/convertDate";
 import { useTripsContext } from "../context";
 import ToDoList from "./ToDoList";
 import Itinerary from "./Itinerary";
+import fetchItineraries from "../functions/fetchItineraries";
 
 interface TripDashboardProps {
   highlight: number;
@@ -11,6 +12,19 @@ interface TripDashboardProps {
 const TripDashboard: React.FC<TripDashboardProps> = ({ highlight }) => {
   const { tripsData } = useTripsContext();
   //   const [toDoNumber, setToDoNumber] = useState(0);
+  const [itineraryUpdate, setItineraryUpdate] = useState(0);
+  const [itineraries, setItineraries] = useState<any>();
+  const fetchItineraryItems = async () => {
+    const fetchedItineraries = await fetchItineraries();
+    setItineraries(fetchedItineraries);
+    console.log(fetchedItineraries, "itineraries");
+  };
+
+  useEffect(() => {
+    fetchItineraryItems();
+    console.log("fetching itineraries");
+  }, [itineraryUpdate]);
+
   if (tripsData.length === 0) {
     return <div></div>;
   }
@@ -30,7 +44,12 @@ const TripDashboard: React.FC<TripDashboardProps> = ({ highlight }) => {
       <div className="Flex">
         <div id="Entire-itinerary">
           <h3>Day-wise Intinerary</h3>
-          <Itinerary selectedTrip={tripsData[highlight]} />
+          <Itinerary
+            selectedTrip={tripsData[highlight]}
+            itineraries={itineraries}
+            itineraryUpdate={itineraryUpdate}
+            setItineraryUpdate={setItineraryUpdate}
+          />
         </div>
 
         <ToDoList selectedTrip={tripsData[highlight]} />

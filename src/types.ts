@@ -72,24 +72,54 @@ export interface DashboardColorsProps {
 
 export interface ItineraryProps {
   selectedTrip: TripData;
-  // itineraryUpdate: number;
-  // setItineraryUpdate: (update: number) => void;
+  itineraries: any;
+  itineraryUpdate: number;
+  setItineraryUpdate: (update: number) => void;
 }
 
 export interface CustomSchedulerProps {
-  selectedTrip: TripData;
-  itineraryUpdate: number;
-  setEditItem: (item: ItineraryItem) => void;
-  editItem: ItineraryItem | undefined;
-  keys: number;
-  setKeys: (key: number) => void;
+  // selectedTrip: TripData;
+  // itineraryUpdate: number;
+  setEditItem: (item: ItineraryItem | null) => void;
+  editItem: ItineraryItem | undefined | null;
+  schedulerData: any;
+  setSchedulerData: (schedulerData: any) => void;
+}
+
+export interface SchedulerDataProps {
+  id: string;
+  label: {
+    icon: string;
+    title: string;
+    subtitle: string;
+  };
+  data: {
+    id: string;
+    startDate: Date;
+    endDate: Date;
+    occupancy: number;
+    title: string;
+    description: string;
+    bgColor: string;
+  }[];
+}
+[];
+
+export interface SchedulerItem {
+  id: string;
+  startDate: Date;
+  endDate: Date;
+  occupancy: number;
+  title: string;
+  description: string;
+  bgColor: string;
 }
 
 export interface ItineraryControlProps {
   selectedTrip: TripData;
   itineraryUpdate: number;
   setItineraryUpdate: (update: number) => void;
-  editItem: ItineraryItem | undefined;
+  editItem: ItineraryItem | undefined | null;
   // key: number;
   // setKey: (key: number) => void;
 }

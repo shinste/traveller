@@ -3,17 +3,17 @@ import { db } from "../firebase/firebase";
 import { ItineraryItem } from "../types";
 import dayjs from "dayjs";
 
-const fetchItineraries = async (selectedTripName: string) => {
+const fetchItineraries = async () => {
   const tripsRef = collection(db, "itineraries");
-  const q = query(tripsRef, where("trip", "==", selectedTripName));
+  // const q = query(tripsRef, where("trip", "==", selectedTripName));
   try {
-    const querySnapshot = await getDocs(q);
+    const querySnapshot = await getDocs(tripsRef);
     let mappedTrips = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       name: doc.data().name,
       startDate: doc.data().startDate,
       endDate: doc.data().endDate,
-      trip: selectedTripName,
+      trip: doc.data().trip,
     }));
     mappedTrips = mappedTrips.sort((a, b) => {
       return dayjs(a.startDate).isBefore(dayjs(b.startDate)) ? -1 : 1;
@@ -37,12 +37,14 @@ const fetchItineraries = async (selectedTripName: string) => {
             endDate: new Date(element.endDate + "T00:00:00"),
             occupancy: 3600,
             title: element.name,
+            trip: element.trip,
             // description: selectedTrip.description,
             bgColor: "#6a7aee",
           },
         ],
       });
     });
+    console.log(returnList, "returnlist");
     return returnList;
   } catch (error) {
     console.error("Error fetching data:", error);

@@ -42,7 +42,7 @@ const NavBar: React.FC<NavBarProps> = ({ page }) => {
                 dashboard
               </p>
             </Link>
-            <Link to="/calendar" className="nav-item nav-link">
+            {/* <Link to="/calendar" className="nav-item nav-link">
               <p
                 className="Nav-button"
                 style={{
@@ -52,7 +52,7 @@ const NavBar: React.FC<NavBarProps> = ({ page }) => {
               >
                 calendar
               </p>
-            </Link>
+            </Link> */}
             <Link to="/trips" className="nav-item nav-link">
               <p
                 className="Nav-button"
