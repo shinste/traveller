@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import Calendar from './Calendar';
+// import Calendar from './Calendar';
 import dayjs, { Dayjs } from 'dayjs';
 
 const MiniCalendar = () => {
@@ -13,7 +13,7 @@ const MiniCalendar = () => {
       ];
     return (
         <div>
-            <Calendar eventDates={specificDatesToHighlight}/>
+            {/* <Calendar eventDates={specificDatesToHighlight}/> */}
         </div>
     );
 }

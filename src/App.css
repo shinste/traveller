@@ -200,8 +200,9 @@
 
 #Trip-lister-div {
   /* width: 20rem; */
+  width: fit-content;
   background-color: #f0f0f0;
-  width: 15vw;
+  /* width: 15vw; */
   height: 100vh;
   padding-right: 1rem;
   position: relative;
@@ -257,7 +258,7 @@
 }
 
 .Each-trip {
-  width: 100%;
+  width: fit-content;
   height: fit-content;
   background-color: white;
   border: 2px #b6d3fd solid;
@@ -628,14 +629,12 @@
   opacity: 0.8;
 }
 
-#Hold-calendar {
-  padding-right: 1rem;
-  /* overflow-y: hidden; */
+.Hold-calendar {
+  padding-top: 2rem;
+  width: 100%;
+  padding-right: 1rem;  /* overflow-y: hidden; */
   /* height: 100vh; */
   /* position: fixed; */
-  padding-top: auto;
-  margin-top: auto;
-  bottom: 0;
 }
 
 .Itinerary-day {
@@ -706,6 +705,34 @@
   /* border-radius: 12px; */
   box-shadow: 0 5px 10px rgba(154, 160, 185, 0.05),
     0 15px 40px rgba(166, 173, 201, 0.2);
+}
+
+.month_default_event {
+  overflow: hidden;
+  border-radius: 15px;
+}
+.month_default_event_inner {
+  background: #636363;
+  border-color: #777777;
+  color: #fff;
+  /* padding-left: 35px; */
+  border-radius: 12px;
+}
+
+.month_default_event_bar {
+  left: 0px;
+  width: 30px;
+
+}
+.month_default_event_bar_inner {
+  display: none;
+  background: #8cb3ee;
+  border-radius: 12px;
+  width: 30px;
+}
+
+#Update-calendar{
+  margin-top: 1rem;
 }
 
 @media (max-width: 576px) {

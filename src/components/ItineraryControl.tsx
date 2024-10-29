@@ -112,7 +112,7 @@ const ItineraryControl: React.FC<ItineraryControlProps> = ({
   };
   return (
     <div id="Control-itinerary">
-      <h3>{!editItem ? "Add Itinerary Item" : "Edit " + name}</h3>
+      <h3>{!editItem ? `Add Itinerary Item to ${selectedTrip.name}` : "Edit " + name}</h3>
       <div className="Padding-hori">
         <div className="Align-down Flex-space Forms">
           <div className="Form-div">

@@ -53,7 +53,7 @@ export interface NewToDoProps {
 }
 
 export interface TripEvent {
-  id: number;
+  id: string;
   text: string;
   start: string;
   end: string;
@@ -139,4 +139,11 @@ export interface DatePickerProps {
       ) => void)
     | undefined;
   value: Dayjs | null;
+}
+
+export interface CalendarProps {
+  events: TripEvent[];
+  setDateChosen: (dateChosen: any) => void;
+  dateChosen: any
+  originalEventDates: any
 }

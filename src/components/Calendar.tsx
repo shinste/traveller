@@ -1,65 +1,69 @@
-import * as React from 'react';
-import dayjs, { Dayjs } from 'dayjs';
-import Badge from '@mui/material/Badge';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { PickersDay, PickersDayProps } from '@mui/x-date-pickers/PickersDay';
-import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
-import { DayCalendarSkeleton } from '@mui/x-date-pickers/DayCalendarSkeleton';
+import NavBar from "../components/NavBar";
+import MiniCalendar from "../components/MiniCalendar";
+import * as CONSTANTS from "../constants/navBar";
+import DashboardColors from "../components/DashboardColors";
+import useTrips from "../hooks/useTrips";
+import {
+  DayPilotCalendar,
+  DayPilotMonth,
+  DayPilotNavigator,
+} from "@daypilot/daypilot-lite-react";
+import { useEffect, useRef, useState } from "react";
+import dayjs from "dayjs";
+import { useTripsContext } from "../context";
+import { CalendarProps, TripEvent } from "../types";
 
-const initialValue = dayjs('2024-08-16');
+const Calendar: React.FC<CalendarProps> = ({events, setDateChosen, dateChosen, originalEventDates}) => {
+    const [editEvent, setEditEvent] = useState<string[]>([]);
 
-// Define your specific dates to highlight
+    const handleChangeEvent = (focusId: string) => {
+        const touchedEvent: TripEvent | undefined = events.find((event) => event.id === focusId);
+        if (dayjs(touchedEvent?.start).toISOString().slice(0, 19) !== dayjs(originalEventDates[focusId][0]).toISOString().slice(0, 19) || dayjs(touchedEvent?.end).toISOString().slice(0, 19) !== dayjs(originalEventDates[focusId][1]).toISOString().slice(0, 19)) {
+            setEditEvent([...editEvent, focusId]);
+        
+        } else if (editEvent.includes(focusId)) {
+            setEditEvent(editEvent.filter((eventId) => eventId !== focusId))
+            console.log('same')
+            console.log(editEvent)
+        } else {
+            console.log(dayjs(touchedEvent?.start).toISOString().slice(0, 19))
+            console.log(dayjs(originalEventDates[focusId][0]).toISOString().slice(0, 19))
+        }
+        // console.log(id)
+    }
+    useEffect(() => {
+     console.log(originalEventDates)   
+    })
+    return (
+        <div className="Flex">
+          <div id="Dashboard-side-div" className="Main-padding">
+            <DayPilotNavigator
+              onTimeRangeSelected={(args) => {
+                setDateChosen(args.day);
+              }}
+            />
+            {/* <MiniCalendar /> */}
+            <DashboardColors setDateChosen={setDateChosen} />
+          </div>
+          <div className="Hold-calendar">
 
+          <DayPilotMonth onEventMove={event => {console.log(event); console.log(events)}} onEventResized={event => handleChangeEvent(event.e.data.id)} events={events} startDate={dateChosen} cellHeight={130}/>
+            {editEvent.length > 0 &&
+            
 
-function ServerDay(props: PickersDayProps<Dayjs> & { highlightedDates?: Dayjs[] }) {
-  const { highlightedDates = [], day, outsideCurrentMonth, ...other } = props;
-
-  const isSelected =
-    !outsideCurrentMonth &&
-    highlightedDates.some(highlightedDate => day.isSame(highlightedDate, 'day'));
-
-  return (
-    <Badge
-      key={day.toString()}
-      overlap="circular"
-      badgeContent={isSelected ? <div className='badge'><p>o</p></div> : undefined}
-    >
-      <PickersDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} />
-    </Badge>
-  );
+            <div id="Update-calendar">
+                <button
+                className="btn btn-outline-primary"
+                style={{ backgroundColor: "#B6D3FD", fontSize: "25px" }}
+                // onClick={handleUpdate}
+                >
+                Update Event Changes
+                </button>
+          </div>
 }
-
-interface CalendarProps {
-    eventDates: Dayjs[]
-}
-const Calendar: React.FC<CalendarProps> = ({eventDates}) => {
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [highlightedDates, setHighlightedDates] = React.useState(eventDates);
-
-  const handleMonthChange = (date: Dayjs) => {
-    // Optionally, update highlightedDates based on the new month.
-    setIsLoading(false);
-  };
-
-  return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DateCalendar
-        defaultValue={initialValue}
-        loading={isLoading}
-        onMonthChange={handleMonthChange}
-        renderLoading={() => <DayCalendarSkeleton />}
-        slots={{
-          day: ServerDay,
-        }}
-        slotProps={{
-          day: {
-            highlightedDates,
-          } as any,
-        }}
-      />
-    </LocalizationProvider>
-  );
+          </div>
+        </div>
+    )
 }
 
 export default Calendar;

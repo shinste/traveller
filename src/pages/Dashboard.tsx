@@ -8,28 +8,26 @@ import {
   DayPilotMonth,
   DayPilotNavigator,
 } from "@daypilot/daypilot-lite-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import dayjs from "dayjs";
 import { useTripsContext } from "../context";
 import { TripEvent } from "../types";
+import Calendar from "../components/Calendar";
 const Dashboard = () => {
-  const config = {
-    // ...
-    durationBarVisible: false,
-    showAllDayEvents: true,
-    // ...
-  };
   const { tripsData } = useTripsContext();
   const [dateChosen, setDateChosen] = useState<any>(
     dayjs().format("YYYY-MM-DD")
   );
   const [events, setEvents] = useState<TripEvent[]>([]);
+  const eventsRef = useRef<any>();
+  // const originalEventDates = Object.fromEntries(eventsRef.current.map((event) => [event.id, [event.start, event.end]]))
+  // eventsRef
   useTrips();
 
   useEffect(() => {
     const output: TripEvent[] = tripsData.map((trip) => {
       return {
-        id: Number(trip.id),
+        id: trip.id,
         text: trip.name,
         start: `${trip.startDate}${trip.startTime}`,
         end: `${trip.endDate}${trip.endTime}`,
@@ -38,50 +36,18 @@ const Dashboard = () => {
       };
     });
     setEvents(output);
-    // setEvents(tripsData.map((trip) => {
-    //   return {id: trip.id, text: trip.name, start: `${trip.startDate}T10:30:00`, }
-    // }))
+    console.log(output, 'output')
+    // ATTENTION I MIGHT HAVE TO FIX THE UPDATING ON THIS WHEN THE USER CHANGES THE EVENT DATE IN THE CALENDAR, EVENTSREF.CURRENT HAS TO CHANGE TO NEW UPDATED EVENTS, HOPEFULLY THIS WILL BE DONE THROUGH A TRIPSDATA UPDATE, SO TRY DOING THAT
+    eventsRef.current = Object.fromEntries(output.map((event) => [event.id, [event.start, event.end]]))
+    console.log(Object.fromEntries(output.map((event) => [event.id, [event.start, event.end]])))
   }, [tripsData]);
   return (
     <div className="Page-default">
       <div id="Dashboard-main-div">
         <NavBar page={CONSTANTS.TITLE_DASHBOARD} />
-        <div className="Flex">
-          <div id="Dashboard-side-div" className="Main-padding">
-            <DayPilotNavigator
-              onTimeRangeSelected={(args) => {
-                setDateChosen(args.day);
-              }}
-            />
-            {/* <MiniCalendar /> */}
-            <DashboardColors setDateChosen={setDateChosen} />
-          </div>
-          <div id="Hold-calendar">
-            {/* <DayPilotMonth
-            // viewType="Days"
-            // startDate={dateChosen}
-            // events={events}
-            // // height={100}
-            // hourWidth={60}
-            // heightSpec="BusinessHours"
-            // {...config}
-            startDate={dateChosen}
-            events={events}
-            // visible={view === "Month"}
-            eventBarVisible={false}
-            onTimeRangeSelected={onTimeRangeSelected}
-            controlRef={setMonthView}
-            /> */}
-            <DayPilotCalendar
-              viewType="Week"
-              startDate={dateChosen}
-              events={events}
-              hourWidth={60}
-              heightSpec="BusinessHours"
-              {...config}
-            />
-          </div>
-        </div>
+        
+        <Calendar events={events} setDateChosen={setDateChosen} dateChosen={dateChosen} originalEventDates={eventsRef.current}/>
+        
       </div>
     </div>
   );
