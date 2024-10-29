@@ -46,7 +46,7 @@ const Calendar: React.FC<CalendarProps> = ({events, setDateChosen, dateChosen, o
             <DashboardColors setDateChosen={setDateChosen} />
           </div>
           <div className="Hold-calendar">
-
+            {/* eventmove dont work, must fix */}
           <DayPilotMonth onEventMove={event => {console.log(event); console.log(events)}} onEventResized={event => handleChangeEvent(event.e.data.id)} events={events} startDate={dateChosen} cellHeight={130}/>
             {editEvent.length > 0 &&
             
