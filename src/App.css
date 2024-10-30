@@ -266,7 +266,7 @@
   padding: 1rem;
   margin-bottom: 1rem;
   box-shadow: 0px 0px 10px 10px #efefef;
-  transition: 0.5s ease;
+  transition: transform 0.5s ease;
   position: relative;
 }
 
@@ -632,7 +632,7 @@
 .Hold-calendar {
   padding-top: 2rem;
   width: 100%;
-  padding-right: 1rem;  /* overflow-y: hidden; */
+  padding-right: 1rem; /* overflow-y: hidden; */
   /* height: 100vh; */
   /* position: fixed; */
 }
@@ -722,7 +722,6 @@
 .month_default_event_bar {
   left: 0px;
   width: 30px;
-
 }
 .month_default_event_bar_inner {
   display: none;
@@ -731,7 +730,7 @@
   width: 30px;
 }
 
-#Update-calendar{
+#Update-calendar {
   margin-top: 1rem;
 }
 

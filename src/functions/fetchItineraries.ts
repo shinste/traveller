@@ -5,7 +5,6 @@ import dayjs from "dayjs";
 
 const fetchItineraries = async () => {
   const tripsRef = collection(db, "itineraries");
-  // const q = query(tripsRef, where("trip", "==", selectedTripName));
   try {
     const querySnapshot = await getDocs(tripsRef);
     let mappedTrips = querySnapshot.docs.map((doc) => ({
@@ -24,7 +23,7 @@ const fetchItineraries = async () => {
         id: element.id,
         label: {
           icon: "https://picsum.photos/24",
-          title: `Itinerary Item #${index + 1}`,
+          title: element.name,
           subtitle:
             dayjs(element.startDate).format("MMMM D, YYYY") +
             "-" +
@@ -38,7 +37,6 @@ const fetchItineraries = async () => {
             occupancy: 3600,
             title: element.name,
             trip: element.trip,
-            // description: selectedTrip.description,
             bgColor: "#6a7aee",
           },
         ],

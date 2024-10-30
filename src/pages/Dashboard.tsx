@@ -35,19 +35,27 @@ const Dashboard = () => {
         participants: 1,
       };
     });
-    setEvents(output);
-    console.log(output, 'output')
     // ATTENTION I MIGHT HAVE TO FIX THE UPDATING ON THIS WHEN THE USER CHANGES THE EVENT DATE IN THE CALENDAR, EVENTSREF.CURRENT HAS TO CHANGE TO NEW UPDATED EVENTS, HOPEFULLY THIS WILL BE DONE THROUGH A TRIPSDATA UPDATE, SO TRY DOING THAT
-    eventsRef.current = Object.fromEntries(output.map((event) => [event.id, [event.start, event.end]]))
-    console.log(Object.fromEntries(output.map((event) => [event.id, [event.start, event.end]])))
+    eventsRef.current = Object.fromEntries(
+      output.map((event) => [event.id, [event.start, event.end]])
+    );
+    console.log(
+      Object.fromEntries(
+        output.map((event) => [event.id, [event.start, event.end]])
+      )
+    );
   }, [tripsData]);
   return (
     <div className="Page-default">
       <div id="Dashboard-main-div">
         <NavBar page={CONSTANTS.TITLE_DASHBOARD} />
-        
-        <Calendar events={events} setDateChosen={setDateChosen} dateChosen={dateChosen} originalEventDates={eventsRef.current}/>
-        
+
+        <Calendar
+          events={events}
+          setDateChosen={setDateChosen}
+          dateChosen={dateChosen}
+          originalEventDates={eventsRef.current}
+        />
       </div>
     </div>
   );

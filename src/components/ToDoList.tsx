@@ -6,7 +6,7 @@ import useToDos from "../hooks/useToDos";
 import { useAuth } from "../contexts/authContext";
 import convertDate from "../functions/convertDate";
 import dayjs from "dayjs";
-import updateToDo from "../functions/updateToDo";
+import updateItems from "../functions/updateItems";
 import CheckIcon from "@mui/icons-material/Check";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CloseIcon from "@mui/icons-material/Close";
@@ -48,7 +48,7 @@ const ToDoList: React.FC<ToDoListProps> = ({ selectedTrip }) => {
 
   const handleUpdate = async () => {
     if (selectedToDos.length > 0) {
-      const status = await updateToDo(toDoData, selectedToDos);
+      const status = await updateItems(toDoData, selectedToDos);
       if (status) {
         setSelectedToDos([]);
         setError("");

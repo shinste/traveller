@@ -20,20 +20,7 @@ const Itinerary: React.FC<ItineraryProps> = ({
   const [editItem, setEditItem] = useState<ItineraryItem | undefined | null>(
     null
   );
-  // const [itineraryUpdate, setItineraryUpdate] = useState(0);
-  // useEffect(() => {
-  //   setKeys(keys + 1);
-  //   console.log("itinerary update");
-  // }, [selectedTrip]);
   const [schedulerData, setSchedulerData] = useState<any>();
-  // const [itineraries, setItineraries] = useState<any>();
-
-  // const fetchItineraryItems = async () => {
-  //   const fetchedItineraries = await fetchItineraries();
-  //   setItineraries(fetchedItineraries);
-
-  //   fetchedItineraries.map((thiung: any) => console.log(thiung.data[0].trip));
-  // };
 
   const updateItineraries = async () => {
     const fullTrip = [
@@ -82,8 +69,6 @@ const Itinerary: React.FC<ItineraryProps> = ({
       <div className="Trip-content-divs" style={{ border: "none" }}>
         {schedulerData && (
           <CustomScheduler
-            // selectedTrip={selectedTrip}
-            // itineraryUpdate={itineraryUpdate}
             setEditItem={setEditItem}
             editItem={editItem}
             schedulerData={schedulerData}
