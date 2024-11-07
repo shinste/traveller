@@ -1,4 +1,4 @@
-import { useTripsContext } from "../context";
+import { useTripsContext } from "../contexts/tripContext";
 import { DashboardColorsProps } from "../types";
 import TripDashboard from "./TripDashboard";
 
@@ -6,7 +6,7 @@ const DashboardColors: React.FC<DashboardColorsProps> = ({ setDateChosen }) => {
   const { tripsData } = useTripsContext();
 
   return (
-    <div id="Trip-color-div">
+    <div id="Trip-color-div" className="Vertical-flex">
       {tripsData.map((trip, index) => {
         return (
           <button

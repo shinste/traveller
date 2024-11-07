@@ -12,11 +12,11 @@ import dayjs from "dayjs";
 import { db } from "../firebase/firebase";
 import { addDoc, collection } from "firebase/firestore";
 import { CirclePicker } from "react-color";
-import { useTripsContext } from "../context";
 import useCreateTrip from "../hooks/useCreateTrip";
 import { LocalizationProvider, TimePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import CustomTimePicker from "./CustomTimePicker";
+import ConflictDisplay from "./ConflictDisplay";
 
 interface TripFormProps {
   setCreateTrip: React.Dispatch<SetStateAction<boolean>>;
@@ -42,6 +42,7 @@ const TripForm: React.FC<TripFormProps> = ({ setCreateTrip, setNewTrip }) => {
   return (
     <div id="Entire-new-trip-div">
       <div id="Trip-form-div">
+        <p className="Form-title">Create Trip</p>
         {errorMessage && <p>{errorMessage}</p>}
         {/* <form onSubmit={handleCreate}> */}
         <div className="Vertical-flex">
@@ -72,42 +73,32 @@ const TripForm: React.FC<TripFormProps> = ({ setCreateTrip, setNewTrip }) => {
               color={color}
               onChangeComplete={handleChangeColor}
               colors={[
-                "#FF6347", // Tomato Red
-                "#FF8C00", // Dark Orange
-                "#FFD700", // Gold
-                "#ADFF2F", // Green Yellow
-                "#00FA9A", // Medium Spring Green
-                "#40E0D0", // Turquoise
-                "#4682B4", // Steel Blue
-                "#9370DB", // Medium Purple
-                // Pinks and Reds
-                "#FFB3BA", // Light Pink
-                "#FF9AA2", // Pastel Coral
-                "#FFC0CB", // Pastel Pink
-                "#FFD1DC", // Pastel Red
-
-                // Oranges and Yellows
-                "#FFDFBA", // Peach
-                "#FFB347", // Pastel Orange
-
-                // Greens
-                "#B0E57C", // Pastel Lime
-                "#77DD77", // Pastel Green
-                "#C1E1C1", // Pastel Mint
-                "#BAFFC9", // Light Green
-
-                // Blues
-                "#AEC6CF", // Pastel Blue
-                "#BAE1FF", // Light Blue
-                "#A1CAF1", // Baby Blue
+                "#FF6347",
+                "#FF8C00",
+                "#FFD700",
+                "#ADFF2F",
+                "#00FA9A",
+                "#40E0D0",
+                "#4682B4",
+                "#9370DB",
+                "#FFB3BA",
+                "#FF9AA2",
+                "#FFC0CB",
+                "#FFD1DC",
+                "#FFDFBA",
+                "#FFB347",
+                "#B0E57C",
+                "#77DD77",
+                "#C1E1C1",
+                "#BAFFC9",
+                "#AEC6CF",
+                "#BAE1FF",
+                "#A1CAF1",
                 "#89CFF0",
-
-                // Purples and Lavenders
-                "#D4C1EC", // Light Lavender
-                "#E0BBE4", // Soft Purple
-
-                "#FFDAC1", // Pastel Peach
-                "#CFCFC4", // Pastel Gray
+                "#D4C1EC",
+                "#E0BBE4",
+                "#FFDAC1",
+                "#CFCFC4",
               ]}
             />
           </div>
@@ -144,24 +135,25 @@ const TripForm: React.FC<TripFormProps> = ({ setCreateTrip, setNewTrip }) => {
             </div>
           </div>
         </div>
-
-        <button
-          className="btn btn-outline-primary Custom-button"
-          type="submit"
-          onClick={handleCreate}
-          style={{ backgroundColor: "#B6D3FD", fontSize: "25px" }}
-        >
-          Create
-        </button>
-        <button
-          className="btn btn-outline-primary"
-          onClick={() => setCreateTrip(false)}
-          style={{ backgroundColor: "red", fontSize: "25px", color: "black" }}
-        >
-          Cancel
-        </button>
-        {/* </form> */}
+        <div className="Justify-between">
+          <button
+            className="btn btn-outline-primary Custom-button"
+            type="submit"
+            onClick={handleCreate}
+            style={{ backgroundColor: "#B6D3FD", fontSize: "25px" }}
+          >
+            Create
+          </button>
+          <button
+            className="btn btn-outline-primary"
+            onClick={() => setCreateTrip(false)}
+            style={{ backgroundColor: "red", fontSize: "25px", color: "black" }}
+          >
+            Cancel
+          </button>
+        </div>
       </div>
+      <ConflictDisplay startDate={startDate} endDate={endDate} color={color} />
     </div>
   );
 };

@@ -3,7 +3,7 @@ import { doSignOut } from "../firebase/auth";
 import { Navigate } from "react-router-dom";
 import * as CONSTANTS from "../constants/navBar";
 import { Link } from "react-router-dom";
-import { useTripsContext } from "../context";
+import { useTripsContext } from "../contexts/tripContext";
 
 interface NavBarProps {
   page: string;

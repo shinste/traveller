@@ -18,7 +18,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Dialog from "@mui/material/Dialog";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { useTripsContext } from "../context";
+import { useTripsContext } from "../contexts/tripContext";
 import deleteEntry from "../functions/deleteEntry";
 import { TripData } from "../types";
 
@@ -93,8 +93,8 @@ const TripLister: React.FC<TripListerProps> = ({
                     : undefined,
               }}
             >
-              <button className="Bland-button">
-                <div className="Flex">
+              <button className="Bland-button Width-100">
+                <div className="Flex Justify-betweens">
                   <div
                     style={{ overflowX: "hidden" }}
                     onClick={() => handleTripClick(index)}

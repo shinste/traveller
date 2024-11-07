@@ -2,7 +2,7 @@ import {
   DateValidationError,
   PickerChangeHandlerContext,
 } from "@mui/x-date-pickers";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { ChangeEvent, MutableRefObject, RefObject } from "react";
 
 export interface TripData {
@@ -144,6 +144,25 @@ export interface DatePickerProps {
 export interface CalendarProps {
   events: TripEvent[];
   setDateChosen: (dateChosen: any) => void;
-  dateChosen: any
-  originalEventDates: any
+  dateChosen: any;
+  originalEventDates: any;
+}
+
+export interface ConflictDisplayProps {
+  startDate: dayjs.Dayjs | null;
+  endDate: dayjs.Dayjs | null;
+  color: string | null;
+}
+
+export interface StartConflicts {
+  name: string;
+  date: string;
+}
+
+export interface DateDisplayProps {
+  dateDisplay: string;
+}
+
+export interface OverlapConflicts {
+  [key: string]: string[];
 }

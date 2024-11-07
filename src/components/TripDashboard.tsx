@@ -1,6 +1,6 @@
 import React, { SetStateAction, useEffect, useState } from "react";
 import convertDate from "../functions/convertDate";
-import { useTripsContext } from "../context";
+import { useTripsContext } from "../contexts/tripContext";
 import ToDoList from "./ToDoList";
 import Itinerary from "./Itinerary";
 import fetchItineraries from "../functions/fetchItineraries";
@@ -30,10 +30,7 @@ const TripDashboard: React.FC<TripDashboardProps> = ({ highlight }) => {
   }
   return (
     <div id="Trip-dashboard">
-      <div
-        id="Headboard"
-        // style={{ backgroundColor: tripsData[highlight].color }}
-      >
+      <div id="Headboard">
         <div className="Vertical-flex Vert-align">
           <div id="Headboard-div">
             <p id="Trip-name-headboard">{tripsData[highlight].name} </p>

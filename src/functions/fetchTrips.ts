@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../firebase/firebase";
 import { useAuth } from "../contexts/authContext";
-import { useTripsContext } from "../context";
+import { useTripsContext } from "../contexts/tripContext";
 import { TripData } from "../types";
 
 const fetchTrips = async (
@@ -24,7 +24,7 @@ const fetchTrips = async (
       endDate: doc.data().endDate,
       startTime: doc.data().startTime,
       endTime: doc.data().endTime,
-      description: doc.data().description
+      description: doc.data().description,
     }));
     updateTrips(mappedTrips);
     console.log(

@@ -1,5 +1,5 @@
 import dayjs, { Dayjs } from "dayjs";
-import { useTripsContext } from "../context";
+import { useTripsContext } from "../contexts/tripContext";
 import { CustomSchedulerProps, ItineraryItem, ItineraryProps } from "../types";
 import getDatesBetween from "../functions/daysBetween";
 import { useCallback, useEffect, useState } from "react";
@@ -8,6 +8,7 @@ import isBetween from "dayjs/plugin/isBetween";
 import "@bitnoi.se/react-scheduler/dist/style.css";
 import convertDate from "../functions/convertDate";
 import fetchItineraries from "../functions/fetchItineraries";
+import { useAuth } from "../contexts/authContext";
 
 const CustomScheduler: React.FC<CustomSchedulerProps> = ({
   setEditItem,
@@ -15,6 +16,7 @@ const CustomScheduler: React.FC<CustomSchedulerProps> = ({
   schedulerData,
   setSchedulerData,
 }) => {
+  const { currentUser } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [prevEdit, setPrevEdit] = useState<string | undefined>("");
   // const [filteredData, setFilteredData] = useState<any>(schedulerData);
@@ -28,7 +30,7 @@ const CustomScheduler: React.FC<CustomSchedulerProps> = ({
   }, []);
 
   const handleEdit = (item: any) => {
-    if (item.description !== "Trip") {
+    if (!item.id.includes(currentUser?.email)) {
       setEditItem({
         id: item.id,
         name: item.title,
@@ -67,38 +69,14 @@ const CustomScheduler: React.FC<CustomSchedulerProps> = ({
   useEffect(() => {
     handleHighlightEdit();
   }, [editItem]);
-  // To highlight the itinerary item that is being edited and unhighlight
 
-  // useEffect(() => {
-  //   if (schedulerData) {
-  //     setFilteredData(
-  //       schedulerData.map((person: any) => ({
-  //         ...person,
-  //         data: person.data.filter(
-  //           (project: any) =>
-  //             // we use "dayjs" for date calculations, but feel free to use library of your choice
-  //             dayjs(project.startDate).isBetween(
-  //               range.startDate,
-  //               range.endDate
-  //             ) ||
-  //             dayjs(project.endDate).isBetween(
-  //               range.startDate,
-  //               range.endDate
-  //             ) ||
-  //             (dayjs(project.startDate).isBefore(range.startDate, "day") &&
-  //               dayjs(project.endDate).isAfter(range.endDate, "day"))
-  //         ),
-  //       }))
-  //     );
-  //   }
-  // }, [schedulerData]);
   return (
     <div>
       <h1>Day-wise Itinerary</h1>
       <Scheduler
         data={schedulerData}
         isLoading={isLoading}
-        onRangeChange={handleRangeChange}
+        // onRangeChange={handleRangeChange}
         // accepts a function to display information
         onTileClick={(clickedResource) => handleEdit(clickedResource)}
         // onItemClick={(item) => handleEdit(item)}

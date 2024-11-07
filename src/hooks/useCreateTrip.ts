@@ -12,7 +12,7 @@ import dayjs, { Dayjs } from "dayjs";
 import { db } from "../firebase/firebase";
 import { addDoc, collection } from "firebase/firestore";
 import { CirclePicker } from "react-color";
-import { useTripsContext } from "../context";
+import { useTripsContext } from "../contexts/tripContext";
 
 const useCreateTrip = (
   setCreateTrip: (status: boolean) => void,
@@ -30,7 +30,7 @@ const useCreateTrip = (
   const endTimeRef = useRef<dayjs.Dayjs | null>(null);
 
   const [errorMessage, setErrorMessage] = useState("");
-  const [color, setColor] = useState("#f44336");
+  const [color, setColor] = useState("");
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     nameRef.current = e.target.value;

@@ -10,7 +10,7 @@ import {
 } from "@daypilot/daypilot-lite-react";
 import { useEffect, useRef, useState } from "react";
 import dayjs from "dayjs";
-import { useTripsContext } from "../context";
+import { useTripsContext } from "../contexts/tripContext";
 import { TripEvent } from "../types";
 import Calendar from "../components/Calendar";
 const Dashboard = () => {
@@ -35,14 +35,18 @@ const Dashboard = () => {
         participants: 1,
       };
     });
+    setEvents(output);
     // ATTENTION I MIGHT HAVE TO FIX THE UPDATING ON THIS WHEN THE USER CHANGES THE EVENT DATE IN THE CALENDAR, EVENTSREF.CURRENT HAS TO CHANGE TO NEW UPDATED EVENTS, HOPEFULLY THIS WILL BE DONE THROUGH A TRIPSDATA UPDATE, SO TRY DOING THAT
     eventsRef.current = Object.fromEntries(
       output.map((event) => [event.id, [event.start, event.end]])
     );
+
+    console.log(eventsRef.current, "curr");
     console.log(
       Object.fromEntries(
         output.map((event) => [event.id, [event.start, event.end]])
-      )
+      ),
+      "sdlkjfa"
     );
   }, [tripsData]);
   return (

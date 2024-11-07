@@ -2,7 +2,7 @@ import { useState } from "react";
 import TripForm from "./TripForm";
 import TripLister from "./TripLister";
 import TripDashboard from "./TripDashboard";
-import { useTripsContext } from "../context";
+import { useTripsContext } from "../contexts/tripContext";
 
 const TripsDisplay = () => {
   const [createTrip, setCreateTrip] = useState(false);

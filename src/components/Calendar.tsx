@@ -11,7 +11,7 @@ import {
 } from "@daypilot/daypilot-lite-react";
 import { useEffect, useRef, useState } from "react";
 import dayjs from "dayjs";
-import { useTripsContext } from "../context";
+import { useTripsContext } from "../contexts/tripContext";
 import { CalendarProps, TripEvent } from "../types";
 import updateItems from "../functions/updateItems";
 
@@ -58,14 +58,20 @@ const Calendar: React.FC<CalendarProps> = ({
     } else {
     }
   };
+  useEffect(() => {
+    console.log(events, "heyo");
+  });
   return (
     <div className="Flex">
       <div id="Dashboard-side-div" className="Main-padding">
-        <DayPilotNavigator
-          onTimeRangeSelected={(args) => {
-            setDateChosen(args.day);
-          }}
-        />
+        <div className="Margin-center">
+          <DayPilotNavigator
+            onTimeRangeSelected={(args) => {
+              setDateChosen(args.day);
+            }}
+          />
+        </div>
+
         {/* <MiniCalendar /> */}
         <DashboardColors setDateChosen={setDateChosen} />
       </div>

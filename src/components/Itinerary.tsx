@@ -1,5 +1,4 @@
 import dayjs, { Dayjs } from "dayjs";
-import { useTripsContext } from "../context";
 import { ItineraryItem, ItineraryProps, SchedulerItem } from "../types";
 import getDatesBetween from "../functions/daysBetween";
 import { useCallback, useEffect, useState } from "react";
@@ -40,7 +39,7 @@ const Itinerary: React.FC<ItineraryProps> = ({
             endDate: new Date(selectedTrip.endDate + selectedTrip.endTime),
             occupancy: 3600,
             title: selectedTrip.name,
-            description: "Trip",
+            description: selectedTrip.location,
             bgColor: selectedTrip.color,
           },
         ],
