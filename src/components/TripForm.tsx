@@ -53,7 +53,6 @@ const TripForm: React.FC<TripFormProps> = ({
       <div id="Trip-form-div">
         <p className="Form-title">Create Trip</p>
         {errorMessage && <p>{errorMessage}</p>}
-        {/* <form onSubmit={handleCreate}> */}
         <div className="Vertical-flex">
           <h4>Details</h4>
           <div id="Name-div" className="Padding-hori">

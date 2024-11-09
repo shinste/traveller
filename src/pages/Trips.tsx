@@ -9,9 +9,7 @@ const Trips = () => {
   return (
     <div className="Page-default">
       <NavBar page={CONSTANTS.TITLE_TRIPS} />
-      {/* <div className="Main-padding"> */}
       <TripsDisplay />
-      {/* </div> */}
     </div>
   );
 };

@@ -11,7 +11,6 @@ interface TripDashboardProps {
 
 const TripDashboard: React.FC<TripDashboardProps> = ({ highlight }) => {
   const { tripsData } = useTripsContext();
-  //   const [toDoNumber, setToDoNumber] = useState(0);
   const [itineraryUpdate, setItineraryUpdate] = useState(0);
   const [itineraries, setItineraries] = useState<any>();
   const fetchItineraryItems = async () => {
