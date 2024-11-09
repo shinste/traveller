@@ -5,7 +5,7 @@ import TripDashboard from "./TripDashboard";
 import { useTripsContext } from "../contexts/tripContext";
 
 const TripsDisplay = () => {
-  const [createTrip, setCreateTrip] = useState(false);
+  const [createTrip, setCreateTrip] = useState("");
   const [newTrip, setNewTrip] = useState("");
   const [highlight, setHighlight] = useState(0);
   const { tripsData } = useTripsContext();
@@ -19,7 +19,11 @@ const TripsDisplay = () => {
         setCreateTrip={setCreateTrip}
       />
       {createTrip ? (
-        <TripForm setCreateTrip={setCreateTrip} setNewTrip={setNewTrip} />
+        <TripForm
+          createTrip={createTrip}
+          setCreateTrip={setCreateTrip}
+          setNewTrip={setNewTrip}
+        />
       ) : (
         tripsData.length > 0 && <TripDashboard highlight={highlight} />
       )}

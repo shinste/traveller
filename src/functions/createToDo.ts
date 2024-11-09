@@ -4,7 +4,7 @@ import { db } from "../firebase/firebase";
 import { Dayjs } from "dayjs";
 
 const createToDo = async (
-  selectedTripName: string,
+  selectedTripId: string,
   newDescription: string,
   newDeadline: Dayjs,
   newStatus: string,
@@ -13,7 +13,7 @@ const createToDo = async (
   const toDoRef = collection(db, "todos");
   try {
     const docRef = await addDoc(toDoRef, {
-      tripID: currentUserEmail + selectedTripName,
+      tripID: selectedTripId,
       user: currentUserEmail,
       description: newDescription,
       deadline: newDeadline.format("YYYY-MM-DD"),

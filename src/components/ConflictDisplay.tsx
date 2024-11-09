@@ -8,79 +8,18 @@ import {
 } from "../types";
 import findOverlap from "../functions/findOverlap";
 import DateDisplay from "./DateDisplay";
+import useConflictScans from "../hooks/useConflictScans";
 
 const ConflictDisplay: React.FC<ConflictDisplayProps> = ({
   startDate,
   endDate,
   color,
 }) => {
-  const { tripsData } = useTripsContext();
-  const [startConflicts, setStartConflicts] = useState<StartConflicts[]>();
-  const [overlapConflicts, setOverlapConflicts] = useState<OverlapConflicts>();
-  const [colorConflicts, setColorConflicts] = useState<string[]>();
-
-  const scanStart = () => {
-    let filteredList: any = tripsData.filter(
-      (trip) => trip.startDate === startDate?.format("YYYY-MM-DD")
-    );
-    if (filteredList && filteredList.length > 0) {
-      filteredList = filteredList.map((trip: TripData) => {
-        return {
-          name: trip.name,
-          date: trip.startDate,
-        };
-      });
-      setStartConflicts(filteredList);
-    } else {
-      setStartConflicts([]);
-    }
-  };
-
-  const scanOverlap = () => {
-    if (startDate && endDate) {
-      const overlapObject: OverlapConflicts = {};
-      tripsData.forEach((event) => {
-        const overlapDays = findOverlap(
-          startDate,
-          endDate,
-          event.startDate,
-          event.endDate
-        );
-        if (overlapDays && overlapDays.length > 0) {
-          overlapObject[event.name] = overlapDays;
-        }
-      });
-      setOverlapConflicts(overlapObject);
-      console.log(overlapObject);
-    }
-  };
-
-  const scanColor = () => {
-    if (color) {
-      const filteredData = tripsData.filter((event) => event.color === color);
-      if (filteredData.length > 0) {
-        setColorConflicts(
-          filteredData.map((event) => {
-            return event.name;
-          })
-        );
-      }
-    }
-  };
-
-  useEffect(() => {
-    if (startDate) {
-      scanStart();
-      if (endDate) {
-        scanOverlap();
-      }
-    }
-  }, [startDate, endDate]);
-
-  useEffect(() => {
-    scanColor();
-    console.log(color);
-  }, [color]);
+  const { startConflicts, overlapConflicts, colorConflicts } = useConflictScans(
+    startDate,
+    endDate,
+    color
+  );
 
   return (
     <div id="Conflict-div">

@@ -1,118 +1,40 @@
 import { TextField } from "@mui/material";
-// import CustomTimePicker from "./CustomTimePicker";
 import DatePickerCustom from "./DatePickerCustom";
-import React, { MutableRefObject, useEffect, useRef, useState } from "react";
-import {
-  CustomSchedulerProps,
-  ItineraryControlProps,
-  ItineraryItem,
-} from "../types";
-import createItinerary from "../functions/createItinerary";
-import dayjs, { Dayjs } from "dayjs";
-import updateItinerary from "../functions/updateItinerary";
-import deleteEntry from "../functions/deleteEntry";
+import React from "react";
+import { ItineraryControlProps } from "../types";
+import useHandleItineraries from "../hooks/useHandleItineraries";
 
 const ItineraryControl: React.FC<ItineraryControlProps> = ({
   selectedTrip,
   itineraryUpdate,
   setItineraryUpdate,
   editItem,
-  // key,
-  // setKey,
 }) => {
-  const [name, setName] = useState("");
-  const [startDate, setStartDate] = useState<Dayjs | null>(null);
-  const [endDate, setEndDate] = useState<Dayjs | null>(null);
-  const [error, setError] = useState("");
+  const {
+    error,
+    setName,
+    name,
+    setStartDate,
+    startDate,
+    endDate,
+    setEndDate,
+    handleEditItinerary,
+    handleCreateItinerary,
+    handleDelete,
+  } = useHandleItineraries(
+    selectedTrip,
+    itineraryUpdate,
+    setItineraryUpdate,
+    editItem
+  );
 
-  //   const nameItinerary: MutableRefObject<string | undefined> = useRef();
-  // const handleStartChange = (date: dayjs.Dayjs | null) => {
-  //   if (date) {
-  //     ItineraryItemRef.current.startDate = date.format("YYYY-MM-DD");
-  //   }
-  // };
-  // const handleEndChange = (date: dayjs.Dayjs | null) => {
-  //   if (date) {
-  //     ItineraryItemRef.current.endDate = date.format("YYYY-MM-DD");
-  //   }
-  // };
-  //   const handleEndChange = () => {};
-  const handleCreateItinerary = async () => {
-    if (!name) {
-      setError("Please provide a valid name");
-    } else if (!startDate) {
-      setError("Please provide a valid start date");
-    } else if (!endDate) {
-      setError("Please provide a valid end date");
-    } else if (startDate < dayjs(selectedTrip.startDate)) {
-      setError("Your start date cannot be before the trip start date.");
-    } else if (endDate > dayjs(selectedTrip.endDate)) {
-      setError("Your end date cannot be after the trip end date.");
-      console.log(startDate, selectedTrip.startDate);
-    } else {
-      const status = await createItinerary({
-        name: name,
-        startDate: startDate.format("YYYY-MM-DD"),
-        endDate: endDate.format("YYYY-MM-DD"),
-        trip: selectedTrip.name,
-      });
-      if (status) {
-        setItineraryUpdate(itineraryUpdate + 1);
-        setName("");
-        setStartDate(null);
-        setEndDate(null);
-        setError("");
-      } else {
-        // error
-      }
-    }
-  };
-
-  useEffect(() => {
-    if (editItem) {
-      setName(editItem.name);
-      setStartDate(dayjs(editItem.startDate));
-      setEndDate(dayjs(editItem.endDate));
-    } else {
-      setName("");
-      setStartDate(null);
-      setEndDate(null);
-    }
-  }, [editItem]);
-
-  const handleEditItinerary = () => {
-    if (!name) {
-      setError("Please provide a valid name");
-    } else if (!startDate) {
-      setError("Please provide a valid start date");
-    } else if (!endDate) {
-      setError("Please provide a valid end date");
-    } else if (startDate < dayjs(selectedTrip.startDate)) {
-      setError("Your start date cannot be before the trip start date.");
-    } else if (endDate > dayjs(selectedTrip.endDate)) {
-      setError("Your end date cannot be after the trip end date.");
-    } else if (editItem) {
-      updateItinerary({
-        id: editItem.id,
-        name: name,
-        startDate: startDate?.format("YYYY-MM-DD"),
-        endDate: endDate?.format("YYYY-MM-DD"),
-        trip: editItem.trip,
-      });
-      setError("");
-      setItineraryUpdate(itineraryUpdate + 1);
-    }
-  };
-
-  const handleDelete = () => {
-    if (editItem) {
-      deleteEntry(["dfs"], "itineraries", editItem.id);
-      setItineraryUpdate(itineraryUpdate + 1);
-    }
-  };
   return (
     <div id="Control-itinerary">
-      <h3>{!editItem ? `Add Itinerary Item to ${selectedTrip.name}` : "Edit " + name}</h3>
+      <h3>
+        {!editItem
+          ? `Add Itinerary Item to ${selectedTrip.name}`
+          : "Edit " + name}
+      </h3>
       <div className="Padding-hori">
         <div className="Align-down Flex-space Forms">
           <div className="Form-div">
@@ -129,7 +51,7 @@ const ItineraryControl: React.FC<ItineraryControlProps> = ({
           </div>
 
           <div className="Form-div">
-            {error.includes("start date") && (
+            {error.includes("Your start date") && (
               <p className="Error-message Error-positioning">{error}</p>
             )}
             <DatePickerCustom
@@ -139,7 +61,7 @@ const ItineraryControl: React.FC<ItineraryControlProps> = ({
             />
           </div>
           <div className="Form-div">
-            {error.includes("end date") && (
+            {error.includes("Your end date") && (
               <p className="Error-message Error-positioning">{error}</p>
             )}
             <DatePickerCustom

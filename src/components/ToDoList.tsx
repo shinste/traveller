@@ -11,86 +11,30 @@ import CheckIcon from "@mui/icons-material/Check";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CloseIcon from "@mui/icons-material/Close";
 import deleteEntry from "../functions/deleteEntry";
+import useToDoList from "../hooks/useToDoList";
 interface ToDoListProps {
   selectedTrip: TripData;
 }
 const ToDoList: React.FC<ToDoListProps> = ({ selectedTrip }) => {
-  const { currentUser } = useAuth();
-  const [newToDo, setNewToDo] = useState(false);
-  const [update, setUpdate] = useState("");
-  const { toDoData } = useToDos(update);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-  const [newToDoState, setNewToDoState] = useState(toDoData);
-  const [selectedToDos, setSelectedToDos] = useState<string[]>([]);
-  const [deleteTodo, setDeleteTodo] = useState<string[]>([]);
-  const statusColors: { [key: string]: string } = {
-    Optional: "orange",
-    Necessary: "green",
-    Urgent: "red",
-  };
+  const {
+    error,
+    success,
+    newToDo,
+    setNewToDo,
+    setUpdate,
+    newToDoState,
+    statusColors,
+    deleteTodo,
+    handleX,
+    handleClick,
+    handleUpdate,
+    selectedToDos,
+  } = useToDoList(selectedTrip);
 
-  const handleClick = (id: string) => {
-    setNewToDoState(
-      toDoData.map((toDo) => {
-        if (toDo.id === id) {
-          toDo.checked = !toDo.checked;
-        }
-        return toDo;
-      })
-    );
-    if (selectedToDos.includes(id)) {
-      setSelectedToDos(selectedToDos.filter((value) => value !== id));
-    } else {
-      setSelectedToDos([...selectedToDos, id]);
-    }
-  };
-
-  const handleUpdate = async () => {
-    if (selectedToDos.length > 0) {
-      const status = await updateItems(toDoData, selectedToDos);
-      if (status) {
-        setSelectedToDos([]);
-        setError("");
-        setSuccess("Successfully Updated");
-      } else {
-        setError("Something went wrong with updating the To Dos");
-      }
-    }
-    if (deleteTodo.length > 0) {
-      deleteEntry(deleteTodo, "todos");
-      setNewToDoState(
-        newToDoState.filter((todo) => !deleteTodo.includes(todo.id))
-      );
-      setDeleteTodo([]);
-    }
-  };
-
-  const handleX = (id: string) => {
-    if (deleteTodo.includes(id)) {
-      setDeleteTodo(deleteTodo.filter((todo) => todo !== id));
-    } else {
-      setDeleteTodo([...deleteTodo, id]);
-    }
-  };
-
-  useEffect(() => {
-    setNewToDoState(toDoData);
-  }, [toDoData]);
-  useEffect(() => {
-    setNewToDo(false);
-  }, [selectedTrip]);
-  useEffect(() => {
-    setSelectedToDos([]);
-    setDeleteTodo([]);
-  }, []);
   return (
     <div
       className="Trip-content-divs"
       style={{
-        // border: `3px ${selectedTrip.color} solid`,
-        // boxShadow: `${selectedTrip.color} 2px 2px 1px`,
-        // backgroundColor: selectedTrip.color,
         width: "30%",
         marginLeft: "1rem",
       }}
@@ -111,13 +55,13 @@ const ToDoList: React.FC<ToDoListProps> = ({ selectedTrip }) => {
         ) : (
           <NewToDo
             setNewToDo={setNewToDo}
-            selectedTripName={selectedTrip.name}
+            selectedTripId={selectedTrip.id}
             setUpdate={setUpdate}
           />
         )}
 
         {newToDoState.map((toDo, index) => {
-          if (toDo.tripID === currentUser?.email + selectedTrip.name) {
+          if (toDo.tripID === selectedTrip.id) {
             return (
               <div
                 className="Todo-regular-div Vertical-flex Left-align mt-2"
@@ -128,7 +72,24 @@ const ToDoList: React.FC<ToDoListProps> = ({ selectedTrip }) => {
                     <p id="Todo-description" className="p">
                       {toDo.description}
                     </p>
-                    <p id="Todo-deadline" className="p">
+                    {dayjs(toDo.deadline).isSame(dayjs(), "day") && (
+                      <p id={"Today-indicator"}>Today!!!</p>
+                    )}
+
+                    <p
+                      className="p"
+                      style={{
+                        color: dayjs(toDo.deadline).isSame(dayjs(), "day")
+                          ? "b40101"
+                          : "#a9a9a9",
+                        fontSize: dayjs(toDo.deadline).isSame(dayjs(), "day")
+                          ? "15px"
+                          : "10px",
+                        fontWeight: dayjs(toDo.deadline).isSame(dayjs(), "day")
+                          ? "bold"
+                          : "normal",
+                      }}
+                    >
                       {dayjs(toDo.deadline).format("MMMM D, YYYY")}
                     </p>
                     <p
@@ -173,7 +134,6 @@ const ToDoList: React.FC<ToDoListProps> = ({ selectedTrip }) => {
             );
           }
         })}
-        {/* <button onClick={() => console.log(selectedToDos)}>eck</button> */}
       </div>
       {(selectedToDos.length > 0 || deleteTodo.length > 0) && (
         <div className="Appear-div">

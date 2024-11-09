@@ -11,56 +11,27 @@ import { addDoc, collection } from "firebase/firestore";
 import { db } from "../firebase/firebase";
 import { useAuth } from "../contexts/authContext";
 import createToDo from "../functions/createToDo";
+import useCreateToDo from "../hooks/useCreateToDo";
 
 const NewToDo: React.FC<NewToDoProps> = ({
   setNewToDo,
-  selectedTripName,
+  selectedTripId,
   setUpdate,
 }) => {
-  const [newDescription, setNewDescription] = useState("Edit this Description");
-  const [editDescription, setEditDescription] = useState(false);
-  const [editDeadline, setEditDeadline] = useState(false);
-  const [newDeadline, setNewDeadline] = useState(dayjs());
-  const [newStatus, setNewStatus] = useState("Necessary");
-  const descriptionRef = useRef("Edit this Description");
-  const { currentUser } = useAuth();
-  const currentUserEmail = currentUser?.email as string;
-
-  const handleCancel = () => {
-    setNewToDo(false);
-    setEditDescription(false);
-    setNewDescription("Edit this Description");
-    setNewDeadline(dayjs());
-  };
-
-  const handleSaveEdit = () => {
-    if (editDescription) {
-      setNewDescription(descriptionRef.current);
-    }
-    setEditDescription(!editDescription);
-  };
-
-  const handleSaveDeadline = () => {
-    if (editDeadline) {
-    }
-    setEditDeadline(!editDeadline);
-  };
-
-  const handleCreate = async () => {
-    const success = await createToDo(
-      selectedTripName,
-      newDescription,
-      newDeadline,
-      newStatus,
-      currentUserEmail
-    );
-    if (success) {
-      setUpdate(success);
-      setNewToDo(false);
-    } else {
-      console.log("failure");
-    }
-  };
+  const {
+    newDescription,
+    editDescription,
+    editDeadline,
+    newDeadline,
+    setNewDeadline,
+    newStatus,
+    setNewStatus,
+    descriptionRef,
+    handleSaveEdit,
+    handleSaveDeadline,
+    handleCancel,
+    handleCreate,
+  } = useCreateToDo(setNewToDo, selectedTripId, setUpdate);
 
   return (
     <div className="New-border Todo-regular-div">

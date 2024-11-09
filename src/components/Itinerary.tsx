@@ -1,14 +1,8 @@
-import dayjs, { Dayjs } from "dayjs";
-import { ItineraryItem, ItineraryProps, SchedulerItem } from "../types";
-import getDatesBetween from "../functions/daysBetween";
-import { useCallback, useEffect, useState } from "react";
-import { Scheduler, SchedulerData } from "@bitnoi.se/react-scheduler";
-import isBetween from "dayjs/plugin/isBetween";
+import { ItineraryProps } from "../types";
 import "@bitnoi.se/react-scheduler/dist/style.css";
 import CustomScheduler from "./CustomScheduler";
 import ItineraryControl from "./ItineraryControl";
-import fetchItineraries from "../functions/fetchItineraries";
-import convertDate from "../functions/convertDate";
+import useUpdateItineraries from "../hooks/useUpdateItineraries";
 
 const Itinerary: React.FC<ItineraryProps> = ({
   selectedTrip,
@@ -16,52 +10,8 @@ const Itinerary: React.FC<ItineraryProps> = ({
   itineraryUpdate,
   setItineraryUpdate,
 }) => {
-  const [editItem, setEditItem] = useState<ItineraryItem | undefined | null>(
-    null
-  );
-  const [schedulerData, setSchedulerData] = useState<any>();
-
-  const updateItineraries = async () => {
-    const fullTrip = [
-      {
-        id: selectedTrip.id,
-        label: {
-          icon: "https://picsum.photos/24",
-          title: selectedTrip.name,
-          subtitle: convertDate(selectedTrip),
-        },
-        data: [
-          {
-            id: selectedTrip.tripID,
-            startDate: new Date(
-              selectedTrip.startDate + selectedTrip.startTime
-            ),
-            endDate: new Date(selectedTrip.endDate + selectedTrip.endTime),
-            occupancy: 3600,
-            title: selectedTrip.name,
-            description: selectedTrip.location,
-            bgColor: selectedTrip.color,
-          },
-        ],
-      },
-    ];
-    if (itineraries) {
-      const exam = [
-        ...fullTrip,
-        ...itineraries.filter(
-          (itinerary: any) => itinerary.data[0].trip === selectedTrip.name
-        ),
-      ];
-      setSchedulerData(exam);
-      console.log(exam, "exa", selectedTrip.name);
-    }
-  };
-
-  useEffect(() => {
-    console.log(schedulerData, "data", selectedTrip.name);
-    updateItineraries();
-    setEditItem(null);
-  }, [selectedTrip, itineraries]);
+  const { schedulerData, setSchedulerData, editItem, setEditItem } =
+    useUpdateItineraries(selectedTrip, itineraries);
 
   return (
     <div>
@@ -81,7 +31,6 @@ const Itinerary: React.FC<ItineraryProps> = ({
           itineraryUpdate={itineraryUpdate}
           setItineraryUpdate={setItineraryUpdate}
           editItem={editItem}
-          // setKey={setKey}
         />
       </div>
     </div>

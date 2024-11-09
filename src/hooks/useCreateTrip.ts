@@ -13,37 +13,47 @@ import { db } from "../firebase/firebase";
 import { addDoc, collection } from "firebase/firestore";
 import { CirclePicker } from "react-color";
 import { useTripsContext } from "../contexts/tripContext";
+import { Color, TripData } from "../types";
+import updateItems from "../functions/updateItems";
 
 const useCreateTrip = (
-  setCreateTrip: (status: boolean) => void,
-  setNewTrip: (id: string) => void
+  setCreateTrip: (status: string) => void,
+  setNewTrip: (id: string) => void,
+  createTrip: string
 ) => {
   const { currentUser } = useAuth();
   const { refresh, updateRefresh } = useTripsContext();
   const tripsRef = collection(db, "trips");
-  const nameRef = useRef("");
-  const locationRef = useRef("");
+  const [name, setName] = useState("");
+  // const nameRef = useRef("");
+  const [location, setLocation] = useState("");
+  // const locationRef = useRef("");
   const [startDate, setStartDate] = useState<dayjs.Dayjs | null>(null);
   const [endDate, setEndDate] = useState<dayjs.Dayjs | null>(null);
-  const descriptionRef = useRef("");
-  const startTimeRef = useRef<dayjs.Dayjs | null>(null);
-  const endTimeRef = useRef<dayjs.Dayjs | null>(null);
+  const [description, setDescription] = useState("");
+  // const descriptionRef = useRef("");
+  const [startTime, setStartTime] = useState<dayjs.Dayjs | null>(null);
+  const [endTime, setEndTime] = useState<dayjs.Dayjs | null>(null);
+  // const startTimeRef = useRef<dayjs.Dayjs | null>(null);
+  // const endTimeRef = useRef<dayjs.Dayjs | null>(null);
+  const [editEvent, setEditEvent] = useState<TripData | undefined>();
 
   const [errorMessage, setErrorMessage] = useState("");
   const [color, setColor] = useState("");
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-    nameRef.current = e.target.value;
+    setName(e.target.value);
   };
 
   const handleLocationChange = (e: ChangeEvent<HTMLInputElement>) => {
-    locationRef.current = e.target.value;
+    setLocation(e.target.value);
+    // locationRef.current = e.target.value;
   };
 
   const handleCreate = async () => {
-    if (nameRef.current.length <= 3) {
+    if (name.length <= 3) {
       setErrorMessage("Please provide a longer name");
-    } else if (nameRef.current.length > 27) {
+    } else if (name.length > 27) {
       setErrorMessage(
         "The maximum number of characters for the trip name is 27."
       );
@@ -55,38 +65,33 @@ const useCreateTrip = (
       setErrorMessage("Please choose a color");
     } else if (startDate > endDate) {
       setErrorMessage("Your starting date cannot be after the ending date!");
-    } else if (!startTimeRef.current || !endTimeRef.current) {
+    } else if (!startTime || !endTime) {
       setErrorMessage("Please select a starting time");
     } else {
       try {
-        console.log({
-          // tripID: currentUser?.email + nameRef.current,
-          // user: currentUser?.email,
-          // name: nameRef.current,
-          // location: locationRef.current,
-          // startDate: startDateRef.current?.format("YYYY-MM-DD"),
-          // endDate: endDateRef.current?.format("YYYY-MM-DD"),
-          // color: color,
-          description: descriptionRef.current,
-          startTime: "T" + startTimeRef.current.format("HH:mm:ss"),
-          endTime: "T" + endTimeRef.current.format("HH:mm:ss"),
-        });
-        const docRef = await addDoc(tripsRef, {
-          tripID: currentUser?.email + nameRef.current,
+        const newInfo = {
           user: currentUser?.email,
-          name: nameRef.current,
-          location: locationRef.current,
+          name: name,
+          location: location,
           startDate: startDate.format("YYYY-MM-DD"),
           endDate: endDate.format("YYYY-MM-DD"),
           color: color,
           description: currentUser?.email,
-          startTime: "T" + startTimeRef.current.format("HH:mm:ss"),
-          endTime: "T" + endTimeRef.current.format("HH:mm:ss"),
-        });
-        console.log("Document written with ID: ", docRef.id);
+          startTime: "T" + startTime.format("HH:mm:ss"),
+          endTime: "T" + endTime.format("HH:mm:ss"),
+        };
+        // Updating an existing event
+        if (createTrip && createTrip !== "create") {
+          (newInfo as any).id = createTrip;
+          updateItems([newInfo], [createTrip], true);
+          // Creating a new event
+        } else {
+          const docRef = await addDoc(tripsRef, newInfo);
+          console.log("Document written with ID: ", docRef.id);
+          setNewTrip(name);
+        }
         updateRefresh(refresh + 1);
-        setCreateTrip(false);
-        setNewTrip(nameRef.current);
+        setCreateTrip("");
       } catch (e) {
         console.error("Error adding document: ", e);
       }
@@ -107,27 +112,54 @@ const useCreateTrip = (
 
   const handleStartTimeChange = (date: Dayjs | null) => {
     if (date) {
-      startTimeRef.current = date;
+      setStartTime(date);
     }
   };
 
   const handleEndTimeChange = (date: Dayjs | null) => {
     if (date) {
-      endTimeRef.current = date;
+      setEndTime(date);
     }
   };
 
   const handleDescription = (descript: ChangeEvent<HTMLInputElement>) => {
     if (descript) {
-      descriptionRef.current = descript.target.value;
+      setDescription(descript.target.value);
     }
   };
-  interface Color {
-    hex: string;
-  }
+
   const handleChangeColor = (color: Color) => {
     setColor(color.hex);
   };
+
+  const { tripsData } = useTripsContext();
+
+  useEffect(() => {
+    if (createTrip && createTrip !== "create") {
+      const editEvent: TripData | undefined = tripsData.find(
+        (event) => event.id === createTrip
+      );
+      setEditEvent(editEvent);
+      console.log(editEvent);
+      if (editEvent) {
+        setStartDate(dayjs(editEvent.startDate));
+        setEndDate(dayjs(editEvent.endDate));
+        setColor(editEvent.color);
+        setName(editEvent.name);
+        setLocation(editEvent.location);
+        setDescription(editEvent.description);
+        const today = dayjs().format("YYYY-MM-DD");
+        const formattedStart = `${today}${editEvent.startTime}`;
+        setStartTime(dayjs(formattedStart));
+        const formattedEnd = `${today}${editEvent.endTime}`;
+        setEndTime(dayjs(formattedEnd));
+      } else {
+        // something went wrong error, couldnt find the editing event
+      }
+    }
+  }, [createTrip]);
+
+  const handleUpdate = () => {};
 
   return {
     setStartDate,
@@ -143,6 +175,13 @@ const useCreateTrip = (
     handleStartTimeChange,
     handleEndTimeChange,
     handleDescription,
+    editEvent,
+    handleUpdate,
+    location,
+    name,
+    description,
+    startTime,
+    endTime,
   };
 };
 

@@ -1,19 +1,15 @@
-import NavBar from "../components/NavBar";
-import MiniCalendar from "../components/MiniCalendar";
-import * as CONSTANTS from "../constants/navBar";
 import DashboardColors from "../components/DashboardColors";
-import useTrips from "../hooks/useTrips";
 import {
   DayPilot,
-  DayPilotCalendar,
   DayPilotMonth,
   DayPilotNavigator,
 } from "@daypilot/daypilot-lite-react";
 import { useEffect, useRef, useState } from "react";
 import dayjs from "dayjs";
 import { useTripsContext } from "../contexts/tripContext";
-import { CalendarProps, TripEvent } from "../types";
+import { CalendarProps } from "../types";
 import updateItems from "../functions/updateItems";
+import useUpdateCalendar from "../hooks/useUpdateCalendar";
 
 const Calendar: React.FC<CalendarProps> = ({
   events,
@@ -21,46 +17,9 @@ const Calendar: React.FC<CalendarProps> = ({
   dateChosen,
   originalEventDates,
 }) => {
-  const { refresh, updateRefresh } = useTripsContext();
-  const [editEvent, setEditEvent] = useState<string[]>([]);
+  const { handleChangeEvent, handleUpdateEvents, editEvent, error } =
+    useUpdateCalendar(originalEventDates, events);
 
-  // Detects if event dates changed by user are different from original
-  const handleChangeEvent = (
-    newStart: DayPilot.Date,
-    newEnd: DayPilot.Date,
-    focusId: string
-  ) => {
-    //If either the start or end date is changed include that event as being edited
-    if (
-      newStart.toString() !== originalEventDates[focusId][0] ||
-      newEnd.toString() !== originalEventDates[focusId][1]
-    ) {
-      if (!editEvent.includes(focusId)) {
-        setEditEvent([...editEvent, focusId]);
-      }
-      // If neither the start or end is being changed remove it from the edited list
-    } else if (editEvent.includes(focusId)) {
-      setEditEvent(editEvent.filter((eventId) => eventId !== focusId));
-    } else {
-      console.log(newStart, newEnd, focusId);
-      console.log(
-        dayjs(originalEventDates[focusId][0]).toISOString().slice(0, 19)
-      );
-    }
-  };
-
-  const handleUpdateEvents = async () => {
-    // console.log(events);
-    const status = await updateItems(events, editEvent, true);
-    if (status) {
-      setEditEvent([]);
-      updateRefresh(refresh + 1);
-    } else {
-    }
-  };
-  useEffect(() => {
-    console.log(events, "heyo");
-  });
   return (
     <div className="Flex">
       <div id="Dashboard-side-div" className="Main-padding">
@@ -72,11 +31,9 @@ const Calendar: React.FC<CalendarProps> = ({
           />
         </div>
 
-        {/* <MiniCalendar /> */}
         <DashboardColors setDateChosen={setDateChosen} />
       </div>
       <div className="Hold-calendar">
-        {/* eventmove dont work, must fix */}
         <DayPilotMonth
           onEventMove={(event) => {
             handleChangeEvent(event.newStart, event.newEnd, event.e.data.id);
@@ -97,6 +54,7 @@ const Calendar: React.FC<CalendarProps> = ({
             >
               Update Event Changes
             </button>
+            {error && <p>{error}</p>}
           </div>
         )}
       </div>

@@ -17,12 +17,15 @@ import { LocalizationProvider, TimePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import CustomTimePicker from "./CustomTimePicker";
 import ConflictDisplay from "./ConflictDisplay";
+import { TripData, TripFormProps } from "../types";
+import { useTripsContext } from "../contexts/tripContext";
+import { Description } from "@mui/icons-material";
 
-interface TripFormProps {
-  setCreateTrip: React.Dispatch<SetStateAction<boolean>>;
-  setNewTrip: React.Dispatch<SetStateAction<string>>;
-}
-const TripForm: React.FC<TripFormProps> = ({ setCreateTrip, setNewTrip }) => {
+const TripForm: React.FC<TripFormProps> = ({
+  createTrip,
+  setCreateTrip,
+  setNewTrip,
+}) => {
   const {
     setStartDate,
     setEndDate,
@@ -37,7 +40,13 @@ const TripForm: React.FC<TripFormProps> = ({ setCreateTrip, setNewTrip }) => {
     handleStartTimeChange,
     handleEndTimeChange,
     handleDescription,
-  } = useCreateTrip(setCreateTrip, setNewTrip);
+    editEvent,
+    location,
+    name,
+    description,
+    startTime,
+    endTime,
+  } = useCreateTrip(setCreateTrip, setNewTrip, createTrip);
 
   return (
     <div id="Entire-new-trip-div">
@@ -54,6 +63,7 @@ const TripForm: React.FC<TripFormProps> = ({ setCreateTrip, setNewTrip }) => {
                 className="mb-3"
                 variant="outlined"
                 required
+                value={name}
                 onChange={handleNameChange}
                 sx={{ width: "15rem" }}
                 label="Name of Trip"
@@ -61,6 +71,7 @@ const TripForm: React.FC<TripFormProps> = ({ setCreateTrip, setNewTrip }) => {
               <TextField
                 id="outlined-basic"
                 variant="outlined"
+                value={location}
                 onChange={handleLocationChange}
                 sx={{ width: "15rem" }}
                 label="Location of Trip"
@@ -121,8 +132,13 @@ const TripForm: React.FC<TripFormProps> = ({ setCreateTrip, setNewTrip }) => {
             <CustomTimePicker
               change={handleStartTimeChange}
               label="Start Time"
+              value={startTime}
             />
-            <CustomTimePicker change={handleEndTimeChange} label="End Time" />
+            <CustomTimePicker
+              change={handleEndTimeChange}
+              label="End Time"
+              value={endTime}
+            />
           </div>
           <div id="Description-new">
             <h4>Description</h4>
@@ -130,6 +146,7 @@ const TripForm: React.FC<TripFormProps> = ({ setCreateTrip, setNewTrip }) => {
               <TextField
                 label="Describe Your Event"
                 sx={{ width: "100%" }}
+                value={description}
                 onChange={handleDescription}
               ></TextField>
             </div>
@@ -142,11 +159,11 @@ const TripForm: React.FC<TripFormProps> = ({ setCreateTrip, setNewTrip }) => {
             onClick={handleCreate}
             style={{ backgroundColor: "#B6D3FD", fontSize: "25px" }}
           >
-            Create
+            {editEvent ? "Update" : "Create"}
           </button>
           <button
             className="btn btn-outline-primary"
-            onClick={() => setCreateTrip(false)}
+            onClick={() => setCreateTrip("")}
             style={{ backgroundColor: "red", fontSize: "25px", color: "black" }}
           >
             Cancel

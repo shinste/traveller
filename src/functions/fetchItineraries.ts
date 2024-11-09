@@ -1,6 +1,5 @@
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../firebase/firebase";
-import { ItineraryItem } from "../types";
 import dayjs from "dayjs";
 
 const fetchItineraries = async () => {
@@ -22,7 +21,6 @@ const fetchItineraries = async () => {
       returnList.push({
         id: element.id,
         label: {
-          icon: "https://picsum.photos/24",
           title: element.name,
           subtitle:
             dayjs(element.startDate).format("MMMM D, YYYY") +

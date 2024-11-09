@@ -4,6 +4,7 @@ import { db } from "../firebase/firebase";
 import { useAuth } from "../contexts/authContext";
 import { useTripsContext } from "../contexts/tripContext";
 import { ToDoData } from "../types";
+import dayjs from "dayjs";
 
 const useToDos = (updater: string) => {
   const [toDoData, setToDoData] = useState<ToDoData[]>([]);
@@ -14,7 +15,7 @@ const useToDos = (updater: string) => {
     const q = query(tripsRef, where("user", "==", currentUser?.email));
     try {
       const querySnapshot = await getDocs(q);
-      const mappedToDos: ToDoData[] = querySnapshot.docs.map((doc) => ({
+      let rawToDos: ToDoData[] = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         user: doc.data().user,
         description: doc.data().description || "",
@@ -23,10 +24,21 @@ const useToDos = (updater: string) => {
         status: doc.data().status,
         checked: doc.data().checked,
       }));
-      setToDoData(mappedToDos);
-      console.log(
-        querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+
+      // Organize to dos so that they show in order of urgent, necessary, and optional, then
+      // chronological order within those sections
+      rawToDos = rawToDos.sort((a, b) =>
+        dayjs(a.deadline).isBefore(dayjs(b.deadline)) ? -1 : 1
       );
+      const urgentToDos = rawToDos.filter((toDo) => toDo.status === "Urgent");
+      const necessaryToDos = rawToDos.filter(
+        (toDo) => toDo.status === "Necessary"
+      );
+      const optionalToDos = rawToDos.filter(
+        (toDo) => toDo.status === "Optional"
+      );
+      const mappedToDos = [...urgentToDos, ...necessaryToDos, ...optionalToDos];
+      setToDoData(mappedToDos);
     } catch (error) {
       console.error("Error fetching data:", error);
     }

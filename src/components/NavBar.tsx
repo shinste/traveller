@@ -9,13 +9,9 @@ interface NavBarProps {
   page: string;
 }
 const NavBar: React.FC<NavBarProps> = ({ page }) => {
-  const { userLoggedIn, currentUser } = useAuth();
+  const { userLoggedIn } = useAuth();
   const { updateTrips } = useTripsContext();
 
-  const handleSignout = () => {
-    updateTrips([]);
-    doSignOut();
-  };
   return (
     <div id="Nav-div">
       {!userLoggedIn && <Navigate to={"/"} replace={true} />}
@@ -24,7 +20,6 @@ const NavBar: React.FC<NavBarProps> = ({ page }) => {
         id="Navigation"
         style={{ borderRadius: "0rem" }}
       >
-        {/* <a className="navbar-brand" href="#"> */}
         <Link to="/dashboard" className="nav-item nav-link">
           <h3 id="Nav-title">traveller</h3>
         </Link>
@@ -42,17 +37,6 @@ const NavBar: React.FC<NavBarProps> = ({ page }) => {
                 dashboard
               </p>
             </Link>
-            {/* <Link to="/calendar" className="nav-item nav-link">
-              <p
-                className="Nav-button"
-                style={{
-                  fontWeight:
-                    CONSTANTS.TITLE_CALENDAR === page ? "bold" : "normal",
-                }}
-              >
-                calendar
-              </p>
-            </Link> */}
             <Link to="/trips" className="nav-item nav-link">
               <p
                 className="Nav-button"
@@ -64,8 +48,14 @@ const NavBar: React.FC<NavBarProps> = ({ page }) => {
                 trips
               </p>
             </Link>
-            <button className="Bland-button" onClick={handleSignout}>
-              log out {currentUser?.email}
+            <button
+              className="Bland-button"
+              onClick={() => {
+                updateTrips([]);
+                doSignOut();
+              }}
+            >
+              <p className="Nav-button">log out </p>
             </button>
           </div>
         </div>

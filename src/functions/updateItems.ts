@@ -8,6 +8,7 @@ const updateItems = async (
   events?: boolean
 ) => {
   const batch = writeBatch(db);
+  // Updating To Do
   if (!events) {
     for (let i = 0; i < updateInfo.length; i++) {
       if (selectedItemIds.includes(updateInfo[i].id)) {
@@ -22,6 +23,7 @@ const updateItems = async (
         });
       }
     }
+    // Trip Changes
   } else {
     for (let i = 0; i < updateInfo.length; i++) {
       console.log(
@@ -31,10 +33,25 @@ const updateItems = async (
       );
       if (selectedItemIds.includes(updateInfo[i].id)) {
         const docRef = doc(db, "trips", updateInfo[i].id);
-        batch.update(docRef, {
-          startDate: updateInfo[i].start.toString().slice(0, 10),
-          endDate: updateInfo[i].end.toString().slice(0, 10),
-        });
+        // Updating event start and end date from dashboard
+        if (updateInfo[i].start && updateInfo[i].end) {
+          batch.update(docRef, {
+            startDate: updateInfo[i].start.toString().slice(0, 10),
+            endDate: updateInfo[i].end.toString().slice(0, 10),
+          });
+          // Updating event info from trips page
+        } else {
+          batch.update(docRef, {
+            name: updateInfo[i].name,
+            location: updateInfo[i].location,
+            color: updateInfo[i].color,
+            startDate: updateInfo[i].startDate,
+            endDate: updateInfo[i].endDate,
+            startTime: updateInfo[i].startTime,
+            endTime: updateInfo[i].endTime,
+            description: updateInfo[i].description,
+          });
+        }
       }
     }
   }

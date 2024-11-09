@@ -3,7 +3,12 @@ import {
   PickerChangeHandlerContext,
 } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
-import { ChangeEvent, MutableRefObject, RefObject } from "react";
+import {
+  ChangeEvent,
+  MutableRefObject,
+  RefObject,
+  SetStateAction,
+} from "react";
 
 export interface TripData {
   id: string;
@@ -48,7 +53,7 @@ export interface DropDownProps {
 
 export interface NewToDoProps {
   setNewToDo: (newToDo: boolean) => void;
-  selectedTripName: string;
+  selectedTripId: string;
   setUpdate: (update: string) => void;
 }
 
@@ -64,6 +69,7 @@ export interface TripEvent {
 export interface CustomTimePickerProps {
   change: (date: Dayjs | null) => void;
   label: string;
+  value: Dayjs | null;
 }
 
 export interface DashboardColorsProps {
@@ -78,8 +84,6 @@ export interface ItineraryProps {
 }
 
 export interface CustomSchedulerProps {
-  // selectedTrip: TripData;
-  // itineraryUpdate: number;
   setEditItem: (item: ItineraryItem | null) => void;
   editItem: ItineraryItem | undefined | null;
   schedulerData: any;
@@ -165,4 +169,21 @@ export interface DateDisplayProps {
 
 export interface OverlapConflicts {
   [key: string]: string[];
+}
+
+export interface TripListerProps {
+  newTrip: string;
+  highlight: number;
+  setHighlight: React.Dispatch<React.SetStateAction<number>>;
+  setCreateTrip: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export interface TripFormProps {
+  createTrip: string;
+  setCreateTrip: React.Dispatch<SetStateAction<string>>;
+  setNewTrip: React.Dispatch<SetStateAction<string>>;
+}
+
+export interface Color {
+  hex: string;
 }

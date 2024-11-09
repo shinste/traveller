@@ -1,15 +1,12 @@
 import { LocalizationProvider, TimePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { CustomTimePickerProps } from "../types";
-import dayjs, { Dayjs } from "dayjs";
-import { useState } from "react";
 
 const CustomTimePicker: React.FC<CustomTimePickerProps> = ({
   change,
   label,
+  value,
 }) => {
-  //   const [time, setTime] = useState<Dayjs | null>(dayjs("2022-04-17T15:30"));
-
   return (
     <div>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -21,6 +18,7 @@ const CustomTimePicker: React.FC<CustomTimePickerProps> = ({
           }}
           onChange={(event) => change(event)}
           label={label}
+          value={value}
         />
       </LocalizationProvider>
     </div>

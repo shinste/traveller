@@ -458,7 +458,15 @@
   box-shadow: 0 5px 10px rgba(154, 160, 185, 0.05);
   border: 2px #b6d3fd solid;
   width: "100%";
+  position: relative;
   /* 0 15px 40px rgba(166, 173, 201, 0.2); */
+}
+
+#Today-indicator {
+  position: absolute;
+  top: 0;
+  left: 0%;
+  z-index: 2;
 }
 
 #New-todo-button {
@@ -558,10 +566,10 @@
   font-size: 12px;
 }
 
-#Todo-deadline {
+/* #Todo-deadline {
   color: #a9a9a9;
   font-size: 10px;
-}
+} */
 
 #Todo-status {
   font-size: 11px;
@@ -644,9 +652,6 @@
 
 .Itinerary-day {
   width: 4rem;
-}
-
-#Itinerary-body {
 }
 
 #Itinerary-full-trip {
